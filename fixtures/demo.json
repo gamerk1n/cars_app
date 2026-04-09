@@ -1,0 +1,65 @@
+[
+  {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+      "name": "employee",
+      "permissions": []
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+      "name": "service_admin",
+      "permissions": []
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 3,
+    "fields": {
+      "name": "sys_admin",
+      "permissions": []
+    }
+  },
+  {
+    "model": "fleet.car",
+    "pk": 1,
+    "fields": {
+      "brand_model": "Toyota Camry",
+      "vin": "JTNB11HK0J3000001",
+      "color": "Белый",
+      "type": "Sedan",
+      "status": "available",
+      "created_at": "2026-04-09T00:00:00Z",
+      "updated_at": "2026-04-09T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.car",
+    "pk": 2,
+    "fields": {
+      "brand_model": "Skoda Octavia",
+      "vin": "TMBJJ7NE0L0000002",
+      "color": "Серый",
+      "type": "Sedan",
+      "status": "maintenance",
+      "created_at": "2026-04-09T00:00:00Z",
+      "updated_at": "2026-04-09T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.car",
+    "pk": 3,
+    "fields": {
+      "brand_model": "Volkswagen Tiguan",
+      "vin": "WVGZZZ5NZJW000003",
+      "color": "Чёрный",
+      "type": "SUV",
+      "status": "available",
+      "created_at": "2026-04-09T00:00:00Z",
+      "updated_at": "2026-04-09T00:00:00Z"
+    }
+  }
+]
