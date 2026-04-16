@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Возврат авто{% endblock %}
+{% block content %}
+  <div class="row row--between">
+    <div>
+      <h1 class="h1">Возврат автомобиля</h1>
+      <div class="muted">Заявка #{{ req.id }} — {{ req.employee.full_name }}</div>
+    </div>
+    <a class="pill" href="{% url 'admin_requests' %}">← Назад</a>
+  </div>
+
+  <div class="card" style="margin-top: 14px; max-width: 860px;">
+    <div class="muted">Автомобиль</div>
+    <div style="margin-top: 6px;">
+      {% if req.car %}
+        <strong>{{ req.car.brand_model }}</strong> <span class="muted">{{ req.car.vin }}</span>
+      {% else %}
+        <span class="muted">—</span>
+      {% endif %}
+    </div>
+
+    <form method="post" class="form" style="margin-top: 14px;">
+      {% csrf_token %}
+      <div class="field">
+        <label class="label" for="{{ form.defects.id_for_label }}">Дефекты (если есть)</label>
+        {{ form.defects }}
+        {% if form.defects.errors %}<div class="message message--error">{{ form.defects.errors }}</div>{% endif %}
+      </div>
+      <button class="btn" type="submit">Подтвердить возврат</button>
+    </form>
+  </div>
+{% endblock %}
+

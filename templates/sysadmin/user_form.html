@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{% if mode == 'create' %}Создать пользователя{% else %}Редактировать пользователя{% endif %}{% endblock %}
+{% block content %}
+  <div class="row row--between">
+    <div>
+      <h1 class="h1">{% if mode == 'create' %}Создать пользователя{% else %}Редактировать пользователя{% endif %}</h1>
+      <div class="muted">Логин, email и роли</div>
+    </div>
+    <a class="pill" href="{% url 'sysadmin_users' %}">← Назад</a>
+  </div>
+
+  <div class="card" style="margin-top: 14px; max-width: 860px;">
+    <form method="post" class="form">
+      {% csrf_token %}
+      <div class="row">
+        <div class="field" style="flex: 1;">
+          <label class="label" for="{{ form.username.id_for_label }}">Username</label>
+          {{ form.username }}
+        </div>
+        <div class="field" style="flex: 1;">
+          <label class="label" for="{{ form.email.id_for_label }}">Email</label>
+          {{ form.email }}
+        </div>
+      </div>
+
+      {% if form.password %}
+        <div class="field">
+          <label class="label" for="{{ form.password.id_for_label }}">Пароль</label>
+          {{ form.password }}
+        </div>
+      {% endif %}
+
+      <div class="field">
+        <label class="label" for="{{ form.is_active.id_for_label }}">Активен</label>
+        {{ form.is_active }}
+      </div>
+
+      <div class="field">
+        <label class="label">Роли (groups)</label>
+        {{ form.groups }}
+      </div>
+
+      {% if form.errors %}
+        <div class="message message--error">{{ form.errors }}</div>
+      {% endif %}
+
+      <button class="btn" type="submit">Сохранить</button>
+    </form>
+  </div>
+{% endblock %}

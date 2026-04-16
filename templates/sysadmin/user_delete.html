@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Удалить пользователя{% endblock %}
+{% block content %}
+  <h1 class="h1">Удалить пользователя</h1>
+  <div class="muted">Это действие нельзя отменить.</div>
+
+  <div class="card" style="margin-top: 14px; max-width: 720px;">
+    <p>Удалить пользователя <strong>{{ target_user.username }}</strong>?</p>
+    <form method="post" class="row">
+      {% csrf_token %}
+      <button class="btn btn-inline" type="submit">Удалить</button>
+      <a class="btn btn--ghost btn-inline" href="{% url 'sysadmin_users' %}">Отмена</a>
+    </form>
+  </div>
+{% endblock %}

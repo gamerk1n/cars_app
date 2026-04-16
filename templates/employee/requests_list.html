@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load auth_extras %}
+{% block title %}Мои заявки{% endblock %}
+{% block content %}
+  <div class="row row--between">
+    <div>
+      <h1 class="h1">Мои заявки</h1>
+      <div class="muted">Создание, просмотр и статус заявок</div>
+    </div>
+    {% if user|has_group:'employee' %}
+      <a class="pill" href="{% url 'employee_request_create' %}">+ Создать</a>
+    {% endif %}
+  </div>
+
+  <div class="card" style="margin-top: 14px;">
+    <form method="get" class="row">
+      <input class="input" name="q" value="{{ q }}" placeholder="Поиск: причина / VIN / модель" style="min-width: 260px;" />
+      <select class="select" name="status">
+        <option value="">Все статусы</option>
+        {% for key,label in statuses %}
+          <option value="{{ key }}" {% if status == key %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn btn-inline" type="submit">Фильтровать</button>
+      <a class="btn btn--ghost btn-inline" href="{% url 'employee_requests' %}">Сброс</a>
+    </form>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Период</th>
+          <th>Причина</th>
+          <th>Статус</th>
+          <th>Авто</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in page_obj %}
+          <tr>
+            <td>#{{ r.id }}</td>
+            <td>{{ r.start_date }} → {{ r.end_date }}</td>
+            <td>{{ r.reason }}</td>
+            <td>
+              {% if r.status == 'approved' %}
+                <span class="badge badge--ok">Одобрена</span>
+              {% elif r.status == 'pending' %}
+                <span class="badge badge--warn">Ожидание</span>
+              {% elif r.status == 'rejected' %}
+                <span class="badge badge--bad">Отклонена</span>
+              {% else %}
+                <span class="badge">Завершена</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if r.car %}
+                {{ r.car.brand_model }}<br />
+                <span class="muted">{{ r.car.vin }}</span>
+              {% else %}
+                <span class="muted">—</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="muted">Нет заявок</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% include "partials/pagination.html" %}
+  </div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load dict_extras %}
+{% block title %}Отчёты{% endblock %}
+{% block content %}
+  <div class="row row--between">
+    <div>
+      <h1 class="h1">Отчёты</h1>
+      <div class="muted">Статистика и сформированные отчёты</div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 14px;">
+    <div class="card" style="flex: 1;">
+      <div class="muted">Заявки по статусам</div>
+      <div style="margin-top: 10px; display: grid; gap: 6px;">
+        {% for key,label in request_statuses %}
+          <div class="row row--between">
+            <span class="muted">{{ label }}</span>
+            <span class="pill">{{ request_counts|get_item:key|default:0 }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="card" style="flex: 1;">
+      <div class="muted">Авто по статусам</div>
+      <div style="margin-top: 10px; display: grid; gap: 6px;">
+        {% for key,label in car_statuses %}
+          <div class="row row--between">
+            <span class="muted">{{ label }}</span>
+            <span class="pill">{{ car_counts|get_item:key|default:0 }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 14px;">
+    <div class="card" style="flex: 1;">
+      <div class="muted">Топ авто (по отчётам)</div>
+      <div style="margin-top: 10px; display: grid; gap: 6px;">
+        {% for x in top_cars %}
+          <div class="row row--between">
+            <span class="muted">{{ x.car__brand_model }} ({{ x.car__vin }})</span>
+            <span class="pill">{{ x.c }}</span>
+          </div>
+        {% empty %}
+          <div class="muted">Нет данных</div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="card" style="flex: 1;">
+      <div class="muted">Топ сотрудников (по отчётам)</div>
+      <div style="margin-top: 10px; display: grid; gap: 6px;">
+        {% for x in top_employees %}
+          <div class="row row--between">
+            <span class="muted">{{ x.employee__full_name }}</span>
+            <span class="pill">{{ x.c }}</span>
+          </div>
+        {% empty %}
+          <div class="muted">Нет данных</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 14px;">
+    <form method="get" class="row">
+      <input class="input" type="date" name="start_date" value="{{ start_date }}" />
+      <input class="input" type="date" name="end_date" value="{{ end_date }}" />
+      <button class="btn btn-inline" type="submit">Фильтровать</button>
+      <a class="btn btn--ghost btn-inline" href="{% url 'admin_reports' %}">Сброс</a>
+    </form>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Название</th>
+          <th>Сотрудник</th>
+          <th>Авто</th>
+          <th>Период</th>
+          <th>Создан</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in page_obj %}
+          <tr>
+            <td><a href="{% url 'admin_report_detail' r.id %}">{{ r.name }}</a></td>
+            <td>{{ r.employee.full_name }}</td>
+            <td>{{ r.car.brand_model }}<br /><span class="muted">{{ r.car.vin }}</span></td>
+            <td>{{ r.start_date }} → {{ r.end_date }}</td>
+            <td><span class="muted">{{ r.created_at|date:"Y-m-d H:i" }}</span></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="muted">Нет отчётов</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% include "partials/pagination.html" %}
+  </div>
+{% endblock %}

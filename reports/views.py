@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db.models import Count
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 from core.auth import user_in_groups
 from fleet.models import Car
@@ -60,3 +60,15 @@ def admin_reports(request):
             "top_employees": top_employees,
         },
     )
+
+
+@login_required
+def admin_report_detail(request, pk: int):
+    if not user_in_groups(request.user, ["service_admin"]):
+        raise PermissionDenied
+
+    report = get_object_or_404(
+        Report.objects.select_related("employee", "car", "request"),
+        pk=pk,
+    )
+    return render(request, "admin/report_detail.html", {"report": report})

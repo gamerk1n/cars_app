@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}{{ report.name }}{% endblock %}
+{% block content %}
+  <div class="row row--between">
+    <div>
+      <h1 class="h1">{{ report.name }}</h1>
+      <div class="muted">Подробная информация по завершённой заявке</div>
+    </div>
+    <a class="pill" href="{% url 'admin_reports' %}">← Назад к отчётам</a>
+  </div>
+
+  <div class="row" style="margin-top: 14px;">
+    <div class="card" style="flex: 1;">
+      <div class="muted">Заявка</div>
+      <div style="margin-top: 10px; display: grid; gap: 8px;">
+        <div><strong>ID:</strong> #{{ report.request.id }}</div>
+        <div><strong>Статус:</strong> {{ report.request.get_status_display }}</div>
+        <div><strong>Причина:</strong> {{ report.request.reason }}</div>
+        <div><strong>Период:</strong> {{ report.start_date }} → {{ report.end_date }}</div>
+        <div><strong>Создана:</strong> {{ report.request.created_at|date:"Y-m-d H:i" }}</div>
+        <div><strong>Возвращена:</strong> {{ report.request.returned_at|date:"Y-m-d H:i"|default:"—" }}</div>
+      </div>
+    </div>
+
+    <div class="card" style="flex: 1;">
+      <div class="muted">Сотрудник и автомобиль</div>
+      <div style="margin-top: 10px; display: grid; gap: 8px;">
+        <div><strong>Сотрудник:</strong> {{ report.employee.full_name }}</div>
+        <div><strong>Email:</strong> {{ report.employee.email|default:"—" }}</div>
+        <div><strong>Телефон:</strong> {{ report.employee.phone|default:"—" }}</div>
+        <div><strong>Автомобиль:</strong> {{ report.car.brand_model }}</div>
+        <div><strong>VIN:</strong> {{ report.car.vin }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 14px;">
+    <div class="muted">Дефекты при возврате</div>
+    <div style="margin-top: 10px;">
+      {% if report.request.return_defects %}
+        {{ report.request.return_defects|linebreaks }}
+      {% else %}
+        <span class="muted">Дефекты не указаны.</span>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

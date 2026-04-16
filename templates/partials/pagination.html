@@ -1,0 +1,16 @@
+{% load querystring_tags %}
+{% if page_obj and page_obj.paginator.num_pages > 1 %}
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+      <a class="pill" href="?{% querystring_except_page request page_obj.previous_page_number %}">←</a>
+    {% else %}
+      <span class="pill pill--disabled">←</span>
+    {% endif %}
+    <span class="muted">Стр. {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+    <a class="pill" href="?{% querystring_except_page request page_obj.next_page_number %}">→</a>
+    {% else %}
+      <span class="pill pill--disabled">→</span>
+    {% endif %}
+  </div>
+{% endif %}

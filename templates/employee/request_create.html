@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Создать заявку{% endblock %}
+{% block content %}
+  <div class="row row--between">
+    <div>
+      <h1 class="h1">Создать заявку</h1>
+      <div class="muted">Укажите период и причину</div>
+    </div>
+    <a class="pill" href="{% url 'employee_requests' %}">← Назад</a>
+  </div>
+
+  <div class="card" style="margin-top: 14px; max-width: 720px;">
+    <form method="post" class="form">
+      {% csrf_token %}
+      <div class="field">
+        <label class="label" for="{{ form.start_date.id_for_label }}">Дата начала</label>
+        {{ form.start_date }}
+        {% if form.start_date.errors %}<div class="message message--error">{{ form.start_date.errors }}</div>{% endif %}
+      </div>
+      <div class="field">
+        <label class="label" for="{{ form.end_date.id_for_label }}">Дата окончания</label>
+        {{ form.end_date }}
+        {% if form.end_date.errors %}<div class="message message--error">{{ form.end_date.errors }}</div>{% endif %}
+      </div>
+      <div class="field">
+        <label class="label" for="{{ form.reason.id_for_label }}">Причина</label>
+        {{ form.reason }}
+        {% if form.reason.errors %}<div class="message message--error">{{ form.reason.errors }}</div>{% endif %}
+      </div>
+
+      {% if form.non_field_errors %}<div class="message message--error">{{ form.non_field_errors }}</div>{% endif %}
+
+      <button class="btn" type="submit">Отправить</button>
+    </form>
+  </div>
+{% endblock %}

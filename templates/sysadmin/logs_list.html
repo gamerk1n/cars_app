@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Логи{% endblock %}
+{% block content %}
+  <div class="row row--between">
+    <div>
+      <h1 class="h1">Журнал действий</h1>
+      <div class="muted">Аудит операций пользователей</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 14px;">
+    <form method="get" class="row">
+      <input class="input" name="q" value="{{ q }}" placeholder="Поиск: actor / object_type / object_id" style="min-width: 260px;" />
+      <select class="select" name="action">
+        <option value="">Все действия</option>
+        {% for a in actions %}
+          <option value="{{ a }}" {% if action == a %}selected{% endif %}>{{ a }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn btn-inline" type="submit">Фильтровать</button>
+      <a class="btn btn--ghost btn-inline" href="{% url 'sysadmin_logs' %}">Сброс</a>
+    </form>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Время</th>
+          <th>Кто</th>
+          <th>Действие</th>
+          <th>Объект</th>
+          <th>Payload</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for l in page_obj %}
+          <tr>
+            <td><span class="muted">{{ l.created_at|date:"Y-m-d H:i:s" }}</span></td>
+            <td>{{ l.actor.username|default:"—" }}</td>
+            <td><span class="badge">{{ l.action }}</span></td>
+            <td><span class="muted">{{ l.object_type }} #{{ l.object_id }}</span></td>
+            <td>
+              {% if l.payload %}
+                <pre class="code">{{ l.payload|pprint }}</pre>
+              {% else %}
+                <span class="muted">—</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="muted">Нет записей</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% include "partials/pagination.html" %}
+  </div>
+{% endblock %}

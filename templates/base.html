@@ -1,0 +1,53 @@
+{% load static %}
+{% load auth_extras %}
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Учёт подменных авто{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">Автопарк</div>
+        {% if user.is_authenticated %}
+          <nav class="nav">
+            <a class="nav__item" href="{% url 'home' %}">Главная</a>
+
+            {% if user|has_group:'service_admin' %}
+              <a class="nav__item" href="{% url 'admin_requests' %}">Заявки</a>
+              <a class="nav__item" href="{% url 'admin_cars' %}">Автопарк</a>
+              <a class="nav__item" href="{% url 'admin_reports' %}">Отчёты</a>
+            {% elif user|has_group:'sys_admin' %}
+              <a class="nav__item" href="{% url 'sysadmin_users' %}">Пользователи</a>
+              <a class="nav__item" href="{% url 'sysadmin_logs' %}">Логи</a>
+            {% else %}
+              <a class="nav__item" href="{% url 'employee_requests' %}">Заявки</a>
+            {% endif %}
+          </nav>
+          <div class="sidebar__footer">
+            <div class="muted">{{ user.get_username }}</div>
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button class="btn btn--ghost" type="submit">Выйти</button>
+            </form>
+          </div>
+        {% else %}
+          <div class="muted">Войдите в систему</div>
+        {% endif %}
+      </aside>
+      <main class="content">
+        {% if messages %}
+          <div class="messages">
+            {% for message in messages %}
+              <div class="message message--{{ message.tags|default:'info' }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </body>
+</html>

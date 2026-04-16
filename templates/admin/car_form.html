@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}{% if mode == 'create' %}Добавить авто{% else %}Редактировать авто{% endif %}{% endblock %}
+{% block content %}
+  <div class="row row--between">
+    <div>
+      <h1 class="h1">{% if mode == 'create' %}Добавить авто{% else %}Редактировать авто{% endif %}</h1>
+      <div class="muted">Данные автомобиля и статус доступности</div>
+    </div>
+    <a class="pill" href="{% url 'admin_cars' %}">← Назад</a>
+  </div>
+
+  <div class="card" style="margin-top: 14px; max-width: 820px;">
+    <form method="post" class="form">
+      {% csrf_token %}
+      <div class="row">
+        <div class="field" style="flex: 1;">
+          <label class="label" for="{{ form.brand_model.id_for_label }}">Марка/модель</label>
+          {{ form.brand_model }}
+          {% if form.brand_model.errors %}<div class="message message--error">{{ form.brand_model.errors }}</div>{% endif %}
+        </div>
+        <div class="field" style="flex: 1;">
+          <label class="label" for="{{ form.vin.id_for_label }}">VIN</label>
+          {{ form.vin }}
+          {% if form.vin.errors %}<div class="message message--error">{{ form.vin.errors }}</div>{% endif %}
+        </div>
+      </div>
+      <div class="row">
+        <div class="field" style="flex: 1;">
+          <label class="label" for="{{ form.color.id_for_label }}">Цвет</label>
+          {{ form.color }}
+        </div>
+        <div class="field" style="flex: 1;">
+          <label class="label" for="{{ form.type.id_for_label }}">Тип</label>
+          {{ form.type }}
+        </div>
+      </div>
+      <div class="field">
+        <label class="label" for="{{ form.status.id_for_label }}">Статус</label>
+        {{ form.status }}
+      </div>
+      {% if form.non_field_errors %}<div class="message message--error">{{ form.non_field_errors }}</div>{% endif %}
+      <button class="btn" type="submit">Сохранить</button>
+    </form>
+  </div>
+{% endblock %}

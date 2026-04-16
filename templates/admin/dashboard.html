@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+  <h1 class="h1">Dashboard</h1>
+  <div class="muted">Сводка по заявкам и автопарку</div>
+
+  <div class="row" style="margin-top: 14px;">
+    <div class="card" style="flex: 1;">
+      <div class="muted">Заявки (ожидание)</div>
+      <div style="font-size: 28px; font-weight: 800;">{{ counts.pending|default:0 }}</div>
+    </div>
+    <div class="card" style="flex: 1;">
+      <div class="muted">Заявки (одобрены)</div>
+      <div style="font-size: 28px; font-weight: 800;">{{ counts.approved|default:0 }}</div>
+    </div>
+    <div class="card" style="flex: 1;">
+      <div class="muted">Заявки (отклонены)</div>
+      <div style="font-size: 28px; font-weight: 800;">{{ counts.rejected|default:0 }}</div>
+    </div>
+    <div class="card" style="flex: 1;">
+      <div class="muted">Заявки (завершены)</div>
+      <div style="font-size: 28px; font-weight: 800;">{{ counts.completed|default:0 }}</div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 14px;">
+    <div class="card" style="flex: 1;">
+      <div class="muted">Доступные авто</div>
+      <div style="font-size: 28px; font-weight: 800;">{{ available_cars }}</div>
+      <div class="muted">из {{ total_cars }}</div>
+    </div>
+    <div class="card" style="flex: 2;">
+      <div class="muted">Быстрые переходы</div>
+      <div class="row" style="margin-top: 10px;">
+        <a class="pill" href="{% url 'admin_requests' %}">Заявки</a>
+        <a class="pill" href="{% url 'admin_cars' %}">Автопарк</a>
+        <a class="pill" href="{% url 'admin_reports' %}">Отчёты</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}
