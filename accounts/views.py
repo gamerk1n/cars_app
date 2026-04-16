@@ -8,10 +8,21 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 
 from accounts.forms import UserCreateForm, UserUpdateForm
+from accounts.models import Employee
 from audit.models import ActionLog
 from core.auth import user_in_groups
 
 User = get_user_model()
+
+
+def ensure_employee_profile(user) -> None:
+    employee_group = user.groups.filter(name="employee").exists()
+    if employee_group and not hasattr(user, "employee"):
+        Employee.objects.create(
+            user=user,
+            full_name=user.get_full_name() or user.username,
+            email=user.email or "",
+        )
 
 
 @login_required
@@ -53,6 +64,7 @@ def sysadmin_user_create(request):
             user.set_password(form.cleaned_data["password"])
             user.save()
             form.save_m2m()
+            ensure_employee_profile(user)
             messages.success(request, "Пользователь создан.")
             return redirect("sysadmin_users")
     else:
@@ -68,7 +80,8 @@ def sysadmin_user_edit(request, pk: int):
     if request.method == "POST":
         form = UserUpdateForm(request.POST, instance=user)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            ensure_employee_profile(user)
             messages.success(request, "Пользователь обновлён.")
             return redirect("sysadmin_users")
     else:
