@@ -26,7 +26,8 @@ jobs:
 
     env:
       DJANGO_SECRET_KEY: ci-secret
-      DJANGO_DEBUG: "0"
+      DJANGO_DEBUG: "1"
+      DJANGO_SECURE_SSL_REDIRECT: "0"
       DB_NAME: cars_app
       DB_USER: postgres
       DB_PASSWORD: postgres
