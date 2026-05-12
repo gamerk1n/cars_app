@@ -4,7 +4,7 @@
   <div class="row row--between">
     <div>
       <h1 class="h1">{% if mode == 'create' %}Создать пользователя{% else %}Редактировать пользователя{% endif %}</h1>
-      <div class="muted">Логин, email и роли</div>
+      <div class="muted">Логин, контакты, ФИО и роли</div>
     </div>
     <a class="pill" href="{% url 'sysadmin_users' %}">← Назад</a>
   </div>
@@ -14,13 +14,18 @@
       {% csrf_token %}
       <div class="row">
         <div class="field" style="flex: 1;">
-          <label class="label" for="{{ form.username.id_for_label }}">Username</label>
+          <label class="label" for="{{ form.username.id_for_label }}">Логин</label>
           {{ form.username }}
         </div>
         <div class="field" style="flex: 1;">
           <label class="label" for="{{ form.email.id_for_label }}">Email</label>
           {{ form.email }}
         </div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="{{ form.full_name.id_for_label }}">ФИО</label>
+        {{ form.full_name }}
       </div>
 
       {% if form.password %}
@@ -36,8 +41,8 @@
       </div>
 
       <div class="field">
-        <label class="label">Роли (groups)</label>
-        {{ form.groups }}
+        <label class="label">Роли</label>
+        <div class="checkbox-list">{{ form.groups }}</div>
       </div>
 
       {% if form.errors %}

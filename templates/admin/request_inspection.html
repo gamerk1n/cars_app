@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}{% if kind == 'issue' %}Акт выдачи{% else %}Акт возврата{% endif %}{% endblock %}
+{% block content %}
+  <div class="row row--between">
+    <div>
+      <h1 class="h1">{% if kind == 'issue' %}Акт выдачи автомобиля{% else %}Акт возврата автомобиля{% endif %}</h1>
+      <div class="muted">Заявка #{{ req.id }} - {{ req.employee.full_name }}</div>
+    </div>
+    <a class="pill" href="{% url 'admin_requests' %}">Назад</a>
+  </div>
+
+  <div class="card" style="margin-top: 14px; max-width: 920px;">
+    <div class="muted">Автомобиль</div>
+    <div style="margin-top: 6px;">
+      {% if req.car %}
+        <strong>{{ req.car.brand_model }}</strong> <span class="muted">{{ req.car.vin }}</span>
+      {% else %}
+        <span class="muted">-</span>
+      {% endif %}
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="form" style="margin-top: 14px;">
+      {% csrf_token %}
+      <div class="row">
+        <div class="field" style="flex: 1; min-width: 220px;">
+          <label class="label" for="{{ form.mileage.id_for_label }}">Пробег, км</label>
+          {{ form.mileage }}
+          {% if form.mileage.errors %}<div class="message message--error">{{ form.mileage.errors }}</div>{% endif %}
+        </div>
+        <div class="field" style="flex: 1; min-width: 220px;">
+          <label class="label" for="{{ form.fuel_level.id_for_label }}">Топливо, %</label>
+          {{ form.fuel_level }}
+          {% if form.fuel_level.errors %}<div class="message message--error">{{ form.fuel_level.errors }}</div>{% endif %}
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="{{ form.exterior_condition.id_for_label }}">Состояние кузова</label>
+        {{ form.exterior_condition }}
+        {% if form.exterior_condition.errors %}<div class="message message--error">{{ form.exterior_condition.errors }}</div>{% endif %}
+      </div>
+
+      <div class="field">
+        <label class="label" for="{{ form.interior_condition.id_for_label }}">Состояние салона</label>
+        {{ form.interior_condition }}
+        {% if form.interior_condition.errors %}<div class="message message--error">{{ form.interior_condition.errors }}</div>{% endif %}
+      </div>
+
+      <div class="field">
+        <label class="label">{{ form.damage_zones.label }}</label>
+        <div class="checkbox-list">{{ form.damage_zones }}</div>
+        {% if form.damage_zones.errors %}<div class="message message--error">{{ form.damage_zones.errors }}</div>{% endif %}
+      </div>
+
+      <div class="field">
+        <label class="label" for="{{ form.defects.id_for_label }}">Дефекты</label>
+        {{ form.defects }}
+        {% if kind == 'return' %}
+          <div class="muted">Если указать дефекты или зоны повреждений, авто перейдёт в обслуживание, а запись попадёт в историю ремонта/ТО.</div>
+        {% endif %}
+        {% if form.defects.errors %}<div class="message message--error">{{ form.defects.errors }}</div>{% endif %}
+      </div>
+
+      <div class="row">
+        <div class="field" style="flex: 1; min-width: 220px;">
+          <label class="label" for="{{ form.photo_exterior.id_for_label }}">Фото кузова</label>
+          {{ form.photo_exterior }}
+          {% if form.photo_exterior.errors %}<div class="message message--error">{{ form.photo_exterior.errors }}</div>{% endif %}
+        </div>
+        <div class="field" style="flex: 1; min-width: 220px;">
+          <label class="label" for="{{ form.photo_interior.id_for_label }}">Фото салона</label>
+          {{ form.photo_interior }}
+          {% if form.photo_interior.errors %}<div class="message message--error">{{ form.photo_interior.errors }}</div>{% endif %}
+        </div>
+        <div class="field" style="flex: 1; min-width: 220px;">
+          <label class="label" for="{{ form.photo_damage.id_for_label }}">Фото повреждений</label>
+          {{ form.photo_damage }}
+          {% if form.photo_damage.errors %}<div class="message message--error">{{ form.photo_damage.errors }}</div>{% endif %}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field" style="flex: 1; min-width: 220px;">
+          <label class="label" for="{{ form.employee_signature.id_for_label }}">Подпись сотрудника</label>
+          {{ form.employee_signature }}
+          {% if form.employee_signature.errors %}<div class="message message--error">{{ form.employee_signature.errors }}</div>{% endif %}
+        </div>
+        <div class="field" style="flex: 1; min-width: 220px;">
+          <label class="label" for="{{ form.inspector_signature.id_for_label }}">Подпись ответственного</label>
+          {{ form.inspector_signature }}
+          {% if form.inspector_signature.errors %}<div class="message message--error">{{ form.inspector_signature.errors }}</div>{% endif %}
+        </div>
+      </div>
+
+      {% if form.non_field_errors %}<div class="message message--error">{{ form.non_field_errors }}</div>{% endif %}
+      <button class="btn" type="submit">{% if kind == 'issue' %}Сохранить акт выдачи{% else %}Подтвердить возврат{% endif %}</button>
+    </form>
+  </div>
+{% endblock %}

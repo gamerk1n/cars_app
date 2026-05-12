@@ -4,7 +4,7 @@
   <div class="row row--between">
     <div>
       <h1 class="h1">Заявки</h1>
-      <div class="muted">Управление статусами и выдачей авто</div>
+      <div class="muted">Управление статусами, выдачей авто и документами заявок</div>
     </div>
     <a class="pill" href="{% url 'admin_dashboard' %}">Dashboard</a>
   </div>
@@ -29,6 +29,7 @@
           <th>Сотрудник</th>
           <th>Период</th>
           <th>Причина</th>
+          <th>Документы</th>
           <th>Статус</th>
           <th>Авто</th>
           <th>Действия</th>
@@ -39,23 +40,62 @@
           <tr>
             <td>#{{ r.id }}</td>
             <td>{{ r.employee.full_name }}</td>
-            <td>{{ r.start_date }} → {{ r.end_date }}</td>
+            <td>{{ r.start_date }} - {{ r.end_date }}</td>
             <td>{{ r.reason }}</td>
-            <td><span class="badge">{{ r.get_status_display }}</span></td>
+            <td>
+              {% if r.attachment %}
+                <a class="pill" href="{% url 'request_attachment' r.id %}" target="_blank" rel="noopener">
+                  {{ r.attachment_original_name|default:"Файл" }}
+                </a>
+              {% else %}
+                <span class="muted">Файл не приложен</span>
+              {% endif %}
+              <div style="margin-top: 8px;">
+                {% if r.rules_accepted %}
+                  <span class="badge badge--ok">Правила подтверждены</span>
+                  {% if r.rules_accepted_at %}<div class="muted">{{ r.rules_accepted_at }}</div>{% endif %}
+                {% else %}
+                  <span class="badge badge--warn">Нет подтверждения</span>
+                {% endif %}
+              </div>
+              <div style="margin-top: 8px;">
+                <a class="pill" href="{% url 'request_rules' %}" target="_blank" rel="noopener">Правила</a>
+              </div>
+            </td>
+            <td>
+              {% if r.status == 'overdue' %}
+                <span class="badge badge--bad">{{ r.get_status_display }}</span>
+              {% elif r.status == 'pending' %}
+                <span class="badge badge--warn">{{ r.get_status_display }}</span>
+              {% elif r.status == 'approved' %}
+                <span class="badge badge--ok">{{ r.get_status_display }}</span>
+              {% else %}
+                <span class="badge">{{ r.get_status_display }}</span>
+              {% endif %}
+            </td>
             <td>
               {% if r.car %}
                 {{ r.car.brand_model }}<br />
                 <span class="muted">{{ r.car.vin }}</span>
               {% else %}
-                <span class="muted">—</span>
+                <span class="muted">-</span>
               {% endif %}
             </td>
             <td>
               {% if r.status == 'completed' or r.status == 'rejected' %}
-                <span class="muted">—</span>
-              {% elif r.status == 'approved' and r.car %}
+                {% if r.has_return_inspection %}
+                  <span class="badge badge--ok">Акт возврата готов</span>
+                {% else %}
+                  <span class="muted">-</span>
+                {% endif %}
+              {% elif r.status == 'approved' and r.car or r.status == 'overdue' and r.car %}
                 <div class="row">
-                  <a class="pill" href="{% url 'admin_request_return' r.id %}">Возврат + дефекты</a>
+                  {% if r.has_issue_inspection %}
+                    <span class="badge badge--ok">Акт выдачи готов</span>
+                  {% else %}
+                    <a class="pill" href="{% url 'admin_request_issue_inspection' r.id %}">Акт выдачи</a>
+                  {% endif %}
+                  <a class="pill" href="{% url 'admin_request_return' r.id %}">Акт возврата</a>
                 </div>
               {% else %}
                 <div class="row">
@@ -67,6 +107,12 @@
                     {% csrf_token %}
                     <button class="btn btn-inline" type="submit">Одобрить</button>
                   </form>
+                  {% if r.status == 'pending' %}
+                    <form method="post" action="{% url 'admin_request_auto_approve' r.id %}">
+                      {% csrf_token %}
+                      <button class="btn btn-inline" type="submit">Автоодобрить</button>
+                    </form>
+                  {% endif %}
                   <form method="post" action="{% url 'admin_request_reject' r.id %}">
                     {% csrf_token %}
                     <button class="btn btn--ghost btn-inline" type="submit">Отклонить</button>
@@ -74,10 +120,16 @@
                 </div>
 
                 <div class="row" style="margin-top: 8px;">
+                  {% if r.status == 'approved' and not r.car %}
+                    <form method="post" action="{% url 'admin_request_auto_assign' r.id %}">
+                      {% csrf_token %}
+                      <button class="btn btn-inline" type="submit">Автоназначить</button>
+                    </form>
+                  {% endif %}
                   <form method="post" action="{% url 'admin_request_assign' r.id %}" class="row">
                     {% csrf_token %}
                     <select class="select" name="car_id">
-                      <option value="">Назначить авто…</option>
+                      <option value="">Назначить авто...</option>
                       {% for c in available_cars %}
                         <option value="{{ c.id }}">{{ c.brand_model }} ({{ c.vin }})</option>
                       {% endfor %}
@@ -89,7 +141,7 @@
             </td>
           </tr>
         {% empty %}
-          <tr><td colspan="7" class="muted">Нет заявок</td></tr>
+          <tr><td colspan="8" class="muted">Нет заявок</td></tr>
         {% endfor %}
       </tbody>
     </table>

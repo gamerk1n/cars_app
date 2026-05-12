@@ -31,6 +31,7 @@
           <th>ID</th>
           <th>Период</th>
           <th>Причина</th>
+          <th>Файл</th>
           <th>Статус</th>
           <th>Авто</th>
         </tr>
@@ -39,13 +40,24 @@
         {% for r in page_obj %}
           <tr>
             <td>#{{ r.id }}</td>
-            <td>{{ r.start_date }} → {{ r.end_date }}</td>
+            <td>{{ r.start_date }} - {{ r.end_date }}</td>
             <td>{{ r.reason }}</td>
+            <td>
+              {% if r.attachment %}
+                <a class="pill" href="{% url 'request_attachment' r.id %}" target="_blank" rel="noopener">
+                  {{ r.attachment_original_name|default:"Файл" }}
+                </a>
+              {% else %}
+                <span class="muted">-</span>
+              {% endif %}
+            </td>
             <td>
               {% if r.status == 'approved' %}
                 <span class="badge badge--ok">Одобрена</span>
               {% elif r.status == 'pending' %}
                 <span class="badge badge--warn">Ожидание</span>
+              {% elif r.status == 'overdue' %}
+                <span class="badge badge--bad">Просрочена</span>
               {% elif r.status == 'rejected' %}
                 <span class="badge badge--bad">Отклонена</span>
               {% else %}
@@ -57,12 +69,12 @@
                 {{ r.car.brand_model }}<br />
                 <span class="muted">{{ r.car.vin }}</span>
               {% else %}
-                <span class="muted">—</span>
+                <span class="muted">-</span>
               {% endif %}
             </td>
           </tr>
         {% empty %}
-          <tr><td colspan="5" class="muted">Нет заявок</td></tr>
+          <tr><td colspan="6" class="muted">Нет заявок</td></tr>
         {% endfor %}
       </tbody>
     </table>

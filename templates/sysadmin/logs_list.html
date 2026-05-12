@@ -1,16 +1,28 @@
 {% extends "base.html" %}
-{% block title %}Логи{% endblock %}
+{% block title %}События{% endblock %}
 {% block content %}
   <div class="row row--between">
     <div>
-      <h1 class="h1">Журнал действий</h1>
-      <div class="muted">Аудит операций пользователей</div>
+      <h1 class="h1">Лента событий</h1>
+      <div class="muted">Бизнес-события заявок, бронирований, осмотров и автопарка</div>
     </div>
   </div>
 
   <div class="card" style="margin-top: 14px;">
     <form method="get" class="row">
-      <input class="input" name="q" value="{{ q }}" placeholder="Поиск: actor / object_type / object_id" style="min-width: 260px;" />
+      <input class="input" name="q" value="{{ q }}" placeholder="Поиск: событие / текст / объект / пользователь" style="min-width: 320px;" />
+      <select class="select" name="category">
+        <option value="">Все категории</option>
+        {% for key, label in categories %}
+          <option value="{{ key }}" {% if category == key %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      <select class="select" name="severity">
+        <option value="">Любая важность</option>
+        {% for key, label in severities %}
+          <option value="{{ key }}" {% if severity == key %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
       <select class="select" name="action">
         <option value="">Все действия</option>
         {% for a in actions %}
@@ -25,9 +37,10 @@
       <thead>
         <tr>
           <th>Время</th>
+          <th>Событие</th>
+          <th>Контекст</th>
           <th>Кто</th>
-          <th>Действие</th>
-          <th>Объект</th>
+          <th>Детали</th>
           <th>Payload</th>
         </tr>
       </thead>
@@ -35,19 +48,48 @@
         {% for l in page_obj %}
           <tr>
             <td><span class="muted">{{ l.created_at|date:"Y-m-d H:i:s" }}</span></td>
+            <td>
+              <div class="row">
+                {% if l.severity == "error" %}
+                  <span class="badge badge--bad">{{ l.get_severity_display }}</span>
+                {% elif l.severity == "warning" %}
+                  <span class="badge badge--warn">{{ l.get_severity_display }}</span>
+                {% else %}
+                  <span class="badge badge--ok">{{ l.get_severity_display }}</span>
+                {% endif %}
+                <span class="badge">{{ l.get_category_display }}</span>
+              </div>
+              <div style="margin-top: 8px;"><strong>{{ l.title|default:l.action }}</strong></div>
+              <div class="muted">{{ l.action }}</div>
+            </td>
+            <td>
+              <div class="muted">{{ l.object_type }} #{{ l.object_id }}</div>
+              <div class="row" style="margin-top: 8px;">
+                {% if l.request_id %}<span class="badge">Заявка #{{ l.request_id }}</span>{% endif %}
+                {% if l.car_id %}<span class="badge">Авто #{{ l.car_id }}</span>{% endif %}
+              </div>
+            </td>
             <td>{{ l.actor.username|default:"—" }}</td>
-            <td><span class="badge">{{ l.action }}</span></td>
-            <td><span class="muted">{{ l.object_type }} #{{ l.object_id }}</span></td>
+            <td>
+              {% if l.message %}
+                {{ l.message }}
+              {% else %}
+                <span class="muted">—</span>
+              {% endif %}
+            </td>
             <td>
               {% if l.payload %}
-                <pre class="code">{{ l.payload|pprint }}</pre>
+                <details>
+                  <summary class="muted">Показать</summary>
+                  <pre class="code">{{ l.payload|pprint }}</pre>
+                </details>
               {% else %}
                 <span class="muted">—</span>
               {% endif %}
             </td>
           </tr>
         {% empty %}
-          <tr><td colspan="5" class="muted">Нет записей</td></tr>
+          <tr><td colspan="6" class="muted">Нет событий</td></tr>
         {% endfor %}
       </tbody>
     </table>

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}История ремонта и ТО{% endblock %}
+{% block content %}
+  <div class="row row--between">
+    <div>
+      <h1 class="h1">История ремонта и ТО</h1>
+      <div class="muted">{{ car.brand_model }} · {{ car.vin }}</div>
+    </div>
+    <a class="pill" href="{% url 'admin_cars' %}">Назад</a>
+  </div>
+
+  <div class="card" style="margin-top: 14px;">
+    <div class="row" style="margin-bottom: 14px;">
+      <span class="badge">Пробег: {{ car.current_mileage }} км</span>
+      <span class="badge">Следующее ТО: {{ car.next_service_date|default:"-" }}</span>
+      <span class="badge">Пробег ТО: {{ car.next_service_mileage|default:"-" }}</span>
+    </div>
+    <h2 class="h1" style="font-size: 20px;">Новая запись</h2>
+    <form method="post" class="form" style="margin-top: 12px;">
+      {% csrf_token %}
+      <div class="row">
+        <div class="field" style="flex: 1;">
+          <label class="label" for="{{ form.kind.id_for_label }}">Тип</label>
+          {{ form.kind }}
+          {% if form.kind.errors %}<div class="message message--error">{{ form.kind.errors }}</div>{% endif %}
+        </div>
+        <div class="field" style="flex: 1;">
+          <label class="label" for="{{ form.service_date.id_for_label }}">Дата</label>
+          {{ form.service_date }}
+          {% if form.service_date.errors %}<div class="message message--error">{{ form.service_date.errors }}</div>{% endif %}
+        </div>
+      </div>
+      <div class="field">
+        <label class="label" for="{{ form.title.id_for_label }}">Краткое описание</label>
+        {{ form.title }}
+        {% if form.title.errors %}<div class="message message--error">{{ form.title.errors }}</div>{% endif %}
+      </div>
+      <div class="field">
+        <label class="label" for="{{ form.description.id_for_label }}">Детали</label>
+        {{ form.description }}
+        {% if form.description.errors %}<div class="message message--error">{{ form.description.errors }}</div>{% endif %}
+      </div>
+      <div class="row">
+        <div class="field" style="flex: 1;">
+          <label class="label" for="{{ form.contractor.id_for_label }}">Исполнитель</label>
+          {{ form.contractor }}
+          {% if form.contractor.errors %}<div class="message message--error">{{ form.contractor.errors }}</div>{% endif %}
+        </div>
+        <div class="field" style="flex: 1;">
+          <label class="label" for="{{ form.mileage.id_for_label }}">Пробег</label>
+          {{ form.mileage }}
+          {% if form.mileage.errors %}<div class="message message--error">{{ form.mileage.errors }}</div>{% endif %}
+        </div>
+        <div class="field" style="flex: 1;">
+          <label class="label" for="{{ form.cost.id_for_label }}">Стоимость</label>
+          {{ form.cost }}
+          {% if form.cost.errors %}<div class="message message--error">{{ form.cost.errors }}</div>{% endif %}
+        </div>
+      </div>
+      {% if form.non_field_errors %}<div class="message message--error">{{ form.non_field_errors }}</div>{% endif %}
+      <button class="btn" type="submit">Добавить запись</button>
+    </form>
+  </div>
+
+  <div class="card" style="margin-top: 14px;">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Дата</th>
+          <th>Тип</th>
+          <th>Описание</th>
+          <th>Пробег</th>
+          <th>Стоимость</th>
+          <th>Заявка</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for record in records %}
+          <tr>
+            <td>{{ record.service_date }}</td>
+            <td><span class="badge">{{ record.get_kind_display }}</span></td>
+            <td>
+              <strong>{{ record.title }}</strong>
+              {% if record.description %}<div class="muted">{{ record.description }}</div>{% endif %}
+              {% if record.contractor %}<div class="muted">Исполнитель: {{ record.contractor }}</div>{% endif %}
+            </td>
+            <td>{{ record.mileage|default:"-" }}</td>
+            <td>{{ record.cost|default:"-" }}</td>
+            <td>
+              {% if record.request %}
+                #{{ record.request.id }}
+              {% else %}
+                <span class="muted">-</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6" class="muted">История пока пустая</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

@@ -4,13 +4,13 @@
   <div class="row row--between">
     <div>
       <h1 class="h1">Создать заявку</h1>
-      <div class="muted">Укажите период и причину</div>
+      <div class="muted">Укажите период, причину и приложите файл при необходимости</div>
     </div>
-    <a class="pill" href="{% url 'employee_requests' %}">← Назад</a>
+    <a class="pill" href="{% url 'employee_requests' %}">Назад</a>
   </div>
 
   <div class="card" style="margin-top: 14px; max-width: 720px;">
-    <form method="post" class="form">
+    <form method="post" enctype="multipart/form-data" class="form">
       {% csrf_token %}
       <div class="field">
         <label class="label" for="{{ form.start_date.id_for_label }}">Дата начала</label>
@@ -27,6 +27,20 @@
         {{ form.reason }}
         {% if form.reason.errors %}<div class="message message--error">{{ form.reason.errors }}</div>{% endif %}
       </div>
+      <div class="field">
+        <label class="label" for="{{ form.attachment.id_for_label }}">Файл к заявке</label>
+        {{ form.attachment }}
+        <div class="muted">Можно приложить служебную записку, маршрутный лист или другой документ.</div>
+        {% if form.attachment.errors %}<div class="message message--error">{{ form.attachment.errors }}</div>{% endif %}
+      </div>
+      <label class="row" style="align-items: flex-start;">
+        {{ form.rules_accepted }}
+        <span>
+          Я прочитал(а)
+          <a class="pill" href="{% url 'request_rules' %}" target="_blank" rel="noopener">правила предоставления автомобиля</a>
+        </span>
+      </label>
+      {% if form.rules_accepted.errors %}<div class="message message--error">{{ form.rules_accepted.errors }}</div>{% endif %}
 
       {% if form.non_field_errors %}<div class="message message--error">{{ form.non_field_errors }}</div>{% endif %}
 

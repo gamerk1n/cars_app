@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}QR автомобиля{% endblock %}
+{% block content %}
+  <div class="row row--between">
+    <div>
+      <h1 class="h1">{{ car.brand_model }}</h1>
+      <div class="muted">{{ car.vin }}</div>
+    </div>
+    <a class="pill" href="{% url 'admin_cars' %}">Назад</a>
+  </div>
+
+  <div class="row" style="margin-top: 14px; align-items: flex-start;">
+    <div class="card" style="width: 340px;">
+      <img src="{% url 'admin_car_qr_svg' car.id %}" alt="QR {{ car.vin }}" style="width: 100%; height: auto;" />
+      <div class="muted" style="margin-top: 10px;">Наклейте этот QR-код в салоне или на папку автомобиля.</div>
+    </div>
+
+    <div class="card" style="flex: 1; min-width: 320px;">
+      <div class="row">
+        <span class="badge">{{ car.get_status_display }}</span>
+        {% if car.color %}<span class="badge">{{ car.color }}</span>{% endif %}
+        {% if car.type %}<span class="badge">{{ car.type }}</span>{% endif %}
+      </div>
+
+      <div style="margin-top: 16px;">
+        {% if active_request %}
+          <div class="muted">Активная или ближайшая заявка</div>
+          <h2 class="h1" style="font-size: 24px;">#{{ active_request.id }} - {{ active_request.employee.full_name }}</h2>
+          <div class="muted">{{ active_request.start_date }} - {{ active_request.end_date }}</div>
+          <div class="row" style="margin-top: 12px;">
+            {% if issue_inspection %}
+              <span class="badge badge--ok">Акт выдачи готов</span>
+            {% else %}
+              <a class="pill" href="{% url 'admin_request_issue_inspection' active_request.id %}">Акт выдачи</a>
+            {% endif %}
+            {% if return_inspection %}
+              <span class="badge badge--ok">Акт возврата готов</span>
+            {% else %}
+              <a class="pill" href="{% url 'admin_request_return' active_request.id %}">Акт возврата</a>
+            {% endif %}
+          </div>
+        {% else %}
+          <div class="muted">Нет активной заявки по автомобилю.</div>
+        {% endif %}
+      </div>
+
+      <div class="row" style="margin-top: 16px;">
+        <a class="pill" href="{% url 'admin_car_maintenance' car.id %}">Ремонт/ТО</a>
+        <a class="pill" href="{% url 'admin_car_edit' car.id %}">Редактировать</a>
+        <a class="pill" href="{% url 'admin_requests' %}?q={{ car.vin }}">Заявки по VIN</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

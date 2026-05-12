@@ -1,3 +1,6 @@
+from pathlib import Path
+
+from django.utils import timezone
 from rest_framework import serializers
 
 from accounts.models import Employee
@@ -19,18 +22,34 @@ class RequestSerializer(serializers.ModelSerializer):
             "status",
             "employee_id",
             "car_id",
+            "attachment",
+            "attachment_original_name",
+            "rules_accepted",
+            "rules_accepted_at",
             "assigned_at",
             "returned_at",
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["status", "assigned_at", "returned_at", "created_at", "updated_at"]
+        read_only_fields = [
+            "status",
+            "attachment_original_name",
+            "rules_accepted_at",
+            "assigned_at",
+            "returned_at",
+            "created_at",
+            "updated_at",
+        ]
 
     def validate(self, attrs):
         start_date = attrs.get("start_date") or getattr(self.instance, "start_date", None)
         end_date = attrs.get("end_date") or getattr(self.instance, "end_date", None)
         if start_date and end_date and start_date > end_date:
             raise serializers.ValidationError({"end_date": "Дата окончания должна быть не раньше даты начала."})
+        if not self.instance and attrs.get("rules_accepted") is not True:
+            raise serializers.ValidationError(
+                {"rules_accepted": "Подтвердите, что вы прочитали правила."}
+            )
         return attrs
 
     def create(self, validated_data):
@@ -41,6 +60,10 @@ class RequestSerializer(serializers.ModelSerializer):
         except Employee.DoesNotExist:
             raise serializers.ValidationError("Для пользователя не создан профиль Employee.")
         validated_data["employee"] = employee
+        attachment = validated_data.get("attachment")
+        if attachment:
+            validated_data["attachment_original_name"] = Path(attachment.name).name
+        validated_data["rules_accepted_at"] = timezone.now()
         validated_data.pop("car", None)
         validated_data.pop("status", None)
         return super().create(validated_data)

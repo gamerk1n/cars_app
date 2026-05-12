@@ -220,6 +220,8 @@ CREATE DATABASE cars_app;
 
 - `/api/logs/`
 
+- `/api/integrations/telematics/mileage/` — входящий пробег из телематики по VIN
+
 
 
 **Аутентификация:** сессия (браузер, CSRF) или **токен** DRF.
@@ -317,5 +319,53 @@ gunicorn config.wsgi:application --bind 127.0.0.1:8001 --workers 3
 - `service_admin` / `demo12345`
 
 - `sys_admin` / `demo12345`
+
+### Уведомления и фоновые задачи
+
+Фоновые автоматизации запускаются командой:
+
+```powershell
+.\.venv\Scripts\python.exe manage.py run_request_automations
+```
+
+Для расписания используйте Windows Task Scheduler, cron или Celery Beat. Команда помечает просроченные возвраты, создаёт напоминания, повторяет автоназначение и фиксирует зависшие заявки.
+
+Email-уведомления настраиваются переменными окружения:
+
+- `NOTIFICATIONS_ENABLED=1`
+- `NOTIFICATIONS_EMAIL_ENABLED=1`
+- `DJANGO_EMAIL_BACKEND`
+- `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`
+- `EMAIL_USE_TLS` или `EMAIL_USE_SSL`
+- `DEFAULT_FROM_EMAIL`
+
+По умолчанию используется console email backend, поэтому письма выводятся в консоль. Для Telegram, Teams или SMS можно подключить общий webhook через `NOTIFICATIONS_WEBHOOK_URL`; приложение отправляет JSON с событием заявки.
+
+### Интеграции
+
+Входящая телематика принимает пробег автомобиля и автоматически обновляет карточку авто:
+
+```powershell
+curl -X POST http://127.0.0.1:8000/api/integrations/telematics/mileage/ `
+  -H "Content-Type: application/json" `
+  -H "X-Integration-Token: <INTEGRATIONS_API_TOKEN>" `
+  -d "{\"vin\":\"1HGBH41JXMN109186\",\"mileage\":25000,\"source\":\"gps\"}"
+```
+
+Если новый пробег достигает лимита `next_service_mileage`, доступный автомобиль автоматически переводится в статус `На обслуживании`, а событие попадает в ленту событий.
+
+Исходящие бизнес-события складываются в outbox `IntegrationEvent`. Для отправки во внешний webhook используйте:
+
+```powershell
+.\.venv\Scripts\python.exe manage.py dispatch_integration_events
+```
+
+Переменные окружения:
+
+- `INTEGRATIONS_API_TOKEN`
+- `INTEGRATIONS_OUTBOX_ENABLED=1`
+- `INTEGRATIONS_WEBHOOK_URL`
+- `INTEGRATIONS_WEBHOOK_TIMEOUT_SECONDS=3`
+- `INTEGRATIONS_OUTBOX_MAX_ATTEMPTS=5`
 
 

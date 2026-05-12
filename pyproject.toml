@@ -1,3 +1,6 @@
+[tool.ruff]
+exclude = [".git", ".venv", ".pytest_cache", "tmp*"]
+
 [tool.ruff.lint.per-file-ignores]
 "**/tests.py" = ["F401"]
 "audit/views.py" = ["F401"]
