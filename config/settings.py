@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'requests',
     'reports',
     'audit',
+    'integrations',
 ]
 
 MIDDLEWARE = [
@@ -168,6 +169,35 @@ LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "login"
 
+EMAIL_BACKEND = os.getenv(
+    "DJANGO_EMAIL_BACKEND",
+    "django.core.mail.backends.console.EmailBackend",
+)
+EMAIL_HOST = os.getenv("EMAIL_HOST", "localhost")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "25") or "25")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "0") == "1"
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "0") == "1"
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "cars-app@example.com")
+
+NOTIFICATIONS_ENABLED = os.getenv("NOTIFICATIONS_ENABLED", "1") == "1"
+NOTIFICATIONS_EMAIL_ENABLED = os.getenv("NOTIFICATIONS_EMAIL_ENABLED", "1") == "1"
+NOTIFICATIONS_WEBHOOK_URL = os.getenv("NOTIFICATIONS_WEBHOOK_URL", "")
+NOTIFICATIONS_WEBHOOK_TIMEOUT_SECONDS = int(
+    os.getenv("NOTIFICATIONS_WEBHOOK_TIMEOUT_SECONDS", "3") or "3"
+)
+
+INTEGRATIONS_API_TOKEN = os.getenv("INTEGRATIONS_API_TOKEN", "")
+INTEGRATIONS_OUTBOX_ENABLED = os.getenv("INTEGRATIONS_OUTBOX_ENABLED", "1") == "1"
+INTEGRATIONS_WEBHOOK_URL = os.getenv("INTEGRATIONS_WEBHOOK_URL", "")
+INTEGRATIONS_WEBHOOK_TIMEOUT_SECONDS = int(
+    os.getenv("INTEGRATIONS_WEBHOOK_TIMEOUT_SECONDS", "3") or "3"
+)
+INTEGRATIONS_OUTBOX_MAX_ATTEMPTS = int(
+    os.getenv("INTEGRATIONS_OUTBOX_MAX_ATTEMPTS", "5") or "5"
+)
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
@@ -229,3 +259,15 @@ LOGGING = {
         },
     },
 }
+
+REQUEST_AUTO_APPROVAL_MAX_DAYS = int(os.getenv("REQUEST_AUTO_APPROVAL_MAX_DAYS", "14") or "14")
+REQUEST_AUTO_APPROVAL_REASON_KEYWORDS = [
+    item.strip()
+    for item in os.getenv(
+        "REQUEST_AUTO_APPROVAL_REASON_KEYWORDS",
+        "service,business trip,ремонт,дтп,то",
+    ).split(",")
+    if item.strip()
+]
+REQUEST_RETURN_REMINDER_DAYS = int(os.getenv("REQUEST_RETURN_REMINDER_DAYS", "1") or "1")
+REQUEST_PENDING_STALE_HOURS = int(os.getenv("REQUEST_PENDING_STALE_HOURS", "24") or "24")
