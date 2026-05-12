@@ -15,14 +15,27 @@ from core.auth import user_in_groups
 User = get_user_model()
 
 
-def ensure_employee_profile(user) -> None:
+def ensure_employee_profile(user, *, full_name: str | None = None) -> None:
     employee_group = user.groups.filter(name="employee").exists()
-    if employee_group and not hasattr(user, "employee"):
-        Employee.objects.create(
-            user=user,
-            full_name=user.get_full_name() or user.username,
-            email=user.email or "",
-        )
+    if not employee_group:
+        return
+
+    resolved_full_name = (full_name or "").strip() or user.get_full_name() or user.username
+    employee, created = Employee.objects.get_or_create(
+        user=user,
+        defaults={"full_name": resolved_full_name, "email": user.email or ""},
+    )
+    if not created:
+        updates = []
+        if employee.full_name != resolved_full_name:
+            employee.full_name = resolved_full_name
+            updates.append("full_name")
+        if employee.email != (user.email or ""):
+            employee.email = user.email or ""
+            updates.append("email")
+        if updates:
+            updates.append("updated_at")
+            employee.save(update_fields=updates)
 
 
 @login_required
@@ -64,7 +77,7 @@ def sysadmin_user_create(request):
             user.set_password(form.cleaned_data["password"])
             user.save()
             form.save_m2m()
-            ensure_employee_profile(user)
+            ensure_employee_profile(user, full_name=form.cleaned_data.get("full_name"))
             messages.success(request, "Пользователь создан.")
             return redirect("sysadmin_users")
     else:
@@ -81,7 +94,7 @@ def sysadmin_user_edit(request, pk: int):
         form = UserUpdateForm(request.POST, instance=user)
         if form.is_valid():
             user = form.save()
-            ensure_employee_profile(user)
+            ensure_employee_profile(user, full_name=form.cleaned_data.get("full_name"))
             messages.success(request, "Пользователь обновлён.")
             return redirect("sysadmin_users")
     else:
@@ -111,16 +124,41 @@ def sysadmin_logs(request):
     qs = ActionLog.objects.select_related("actor").all()
     q = (request.GET.get("q") or "").strip()
     action = (request.GET.get("action") or "").strip()
+    category = (request.GET.get("category") or "").strip()
+    severity = (request.GET.get("severity") or "").strip()
     if action:
         qs = qs.filter(action=action)
+    if category:
+        qs = qs.filter(category=category)
+    if severity:
+        qs = qs.filter(severity=severity)
     if q:
-        qs = qs.filter(
+        search_filter = (
             Q(actor__username__icontains=q)
+            | Q(action__icontains=q)
+            | Q(title__icontains=q)
+            | Q(message__icontains=q)
             | Q(object_type__icontains=q)
             | Q(object_id__icontains=q)
         )
+        if q.isdigit():
+            search_filter |= Q(request_id=int(q)) | Q(car_id=int(q))
+        qs = qs.filter(search_filter)
 
     paginator = Paginator(qs.order_by("-created_at"), 50)
     page = paginator.get_page(request.GET.get("page"))
     actions = list(ActionLog.objects.values_list("action", flat=True).distinct().order_by("action")[:200])
-    return render(request, "sysadmin/logs_list.html", {"page_obj": page, "q": q, "action": action, "actions": actions})
+    return render(
+        request,
+        "sysadmin/logs_list.html",
+        {
+            "page_obj": page,
+            "q": q,
+            "action": action,
+            "actions": actions,
+            "category": category,
+            "categories": ActionLog.Category.choices,
+            "severity": severity,
+            "severities": ActionLog.Severity.choices,
+        },
+    )
