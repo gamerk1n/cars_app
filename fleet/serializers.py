@@ -13,6 +13,9 @@ class CarSerializer(serializers.ModelSerializer):
             "color",
             "type",
             "status",
+            "current_mileage",
+            "next_service_date",
+            "next_service_mileage",
             "created_at",
             "updated_at",
         ]

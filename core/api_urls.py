@@ -5,6 +5,7 @@ from rest_framework.routers import DefaultRouter
 from audit.api import ActionLogViewSet
 from core.health import api_health, api_health_ready
 from fleet.api import CarViewSet
+from integrations.api import TelematicsMileageIngestView
 from reports.api import ReportViewSet
 from requests.api import RequestViewSet
 
@@ -17,5 +18,10 @@ router.register("logs", ActionLogViewSet, basename="actionlog")
 urlpatterns = [
     path("health/", api_health, name="api_health"),
     path("health/ready/", api_health_ready, name="api_health_ready"),
+    path(
+        "integrations/telematics/mileage/",
+        TelematicsMileageIngestView.as_view(),
+        name="api_telematics_mileage",
+    ),
     path("", include(router.urls)),
 ]

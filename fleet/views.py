@@ -3,11 +3,17 @@ from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.utils import timezone
 
 from core.auth import user_in_groups
-from fleet.forms import CarForm
-from fleet.models import Car
+from fleet.forms import CarForm, MaintenanceRecordForm
+from fleet.models import Car, MaintenanceRecord
+from fleet.qr import qr_svg
+from fleet.services import update_car_mileage
+from requests.models import Reservation, VehicleInspection
 
 
 @login_required
@@ -28,6 +34,66 @@ def admin_cars(request):
         request,
         "admin/cars_list.html",
         {"page_obj": page, "status": status, "q": q, "statuses": Car.Status.choices},
+    )
+
+
+@login_required
+def admin_car_qr_svg(request, pk: int):
+    if not user_in_groups(request.user, ["service_admin"]):
+        raise PermissionDenied
+    car = get_object_or_404(Car, pk=pk)
+    qr_url = request.build_absolute_uri(reverse("admin_car_qr_card", args=[car.pk]))
+    try:
+        svg = qr_svg(qr_url)
+    except ValueError as exc:
+        return HttpResponse(str(exc), status=400)
+    return HttpResponse(svg, content_type="image/svg+xml")
+
+
+@login_required
+def admin_car_qr_card(request, pk: int):
+    if not user_in_groups(request.user, ["service_admin"]):
+        raise PermissionDenied
+    car = get_object_or_404(Car, pk=pk)
+    today = timezone.localdate()
+    reservation = (
+        Reservation.objects.filter(
+            car=car,
+            status=Reservation.Status.ACTIVE,
+            start_date__lte=today,
+            end_date__gte=today,
+        )
+        .select_related("request__employee")
+        .order_by("start_date", "id")
+        .first()
+    )
+    if reservation is None:
+        reservation = (
+            Reservation.objects.filter(
+                car=car,
+                status=Reservation.Status.ACTIVE,
+                start_date__gt=today,
+            )
+            .select_related("request__employee")
+            .order_by("start_date", "id")
+            .first()
+        )
+    active_request = reservation.request if reservation else None
+    inspections = {}
+    if active_request:
+        inspections = {
+            inspection.kind: inspection
+            for inspection in active_request.inspections.all()
+        }
+    return render(
+        request,
+        "admin/car_qr_card.html",
+        {
+            "car": car,
+            "active_request": active_request,
+            "issue_inspection": inspections.get(VehicleInspection.Kind.ISSUE),
+            "return_inspection": inspections.get(VehicleInspection.Kind.RETURN),
+        },
     )
 
 
@@ -60,3 +126,34 @@ def admin_car_edit(request, pk: int):
     else:
         form = CarForm(instance=car)
     return render(request, "admin/car_form.html", {"form": form, "mode": "edit", "car": car})
+
+
+@login_required
+def admin_car_maintenance(request, pk: int):
+    if not user_in_groups(request.user, ["service_admin"]):
+        raise PermissionDenied
+    car = get_object_or_404(Car, pk=pk)
+
+    if request.method == "POST":
+        form = MaintenanceRecordForm(request.POST)
+        if form.is_valid():
+            record: MaintenanceRecord = form.save(commit=False)
+            record.car = car
+            record.created_by = request.user
+            record.save()
+            update_car_mileage(car=car, mileage=record.mileage)
+            messages.success(request, "Запись ремонта/ТО добавлена.")
+            return redirect("admin_car_maintenance", pk=car.pk)
+    else:
+        form = MaintenanceRecordForm()
+
+    records = car.maintenance_records.select_related("request", "created_by")
+    return render(
+        request,
+        "admin/car_maintenance.html",
+        {
+            "car": car,
+            "form": form,
+            "records": records,
+        },
+    )
