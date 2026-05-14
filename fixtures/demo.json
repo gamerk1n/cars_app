@@ -24,16 +24,357 @@
     }
   },
   {
+    "model": "auth.group",
+    "pk": 4,
+    "fields": {
+      "name": "client",
+      "permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 101,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$demo_salt_2026$zy7qlHTFuf1xmPhKeh6JiitaxHtHh9iPMiTLNdIbrcU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "sys_admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "sysadmin@example.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:00:00Z",
+      "groups": [
+        3
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.employee",
+    "pk": 101,
+    "fields": {
+      "user": 101,
+      "full_name": "Сергей Иванов",
+      "position": "Системный администратор",
+      "phone": "+7 900 000-00-01",
+      "email": "sysadmin@example.com",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 102,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$demo_salt_2026$zy7qlHTFuf1xmPhKeh6JiitaxHtHh9iPMiTLNdIbrcU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "service_admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "admin@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:00:00Z",
+      "groups": [
+        2
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.employee",
+    "pk": 102,
+    "fields": {
+      "user": 102,
+      "full_name": "Ольга Смирнова",
+      "position": "Администратор сервиса",
+      "phone": "+7 900 000-00-02",
+      "email": "admin@example.com",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 103,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$demo_salt_2026$zy7qlHTFuf1xmPhKeh6JiitaxHtHh9iPMiTLNdIbrcU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "fleet_manager",
+      "first_name": "",
+      "last_name": "",
+      "email": "fleet.manager@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:00:00Z",
+      "groups": [
+        2
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.employee",
+    "pk": 103,
+    "fields": {
+      "user": 103,
+      "full_name": "Павел Орлов",
+      "position": "Менеджер автопарка",
+      "phone": "+7 900 000-00-03",
+      "email": "fleet.manager@example.com",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 104,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$demo_salt_2026$zy7qlHTFuf1xmPhKeh6JiitaxHtHh9iPMiTLNdIbrcU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "dispatcher",
+      "first_name": "",
+      "last_name": "",
+      "email": "dispatcher@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:00:00Z",
+      "groups": [
+        2
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.employee",
+    "pk": 104,
+    "fields": {
+      "user": 104,
+      "full_name": "Анна Белова",
+      "position": "Диспетчер сервиса",
+      "phone": "+7 900 000-00-04",
+      "email": "dispatcher@example.com",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 105,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$demo_salt_2026$zy7qlHTFuf1xmPhKeh6JiitaxHtHh9iPMiTLNdIbrcU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "employee",
+      "first_name": "",
+      "last_name": "",
+      "email": "employee@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:00:00Z",
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.employee",
+    "pk": 105,
+    "fields": {
+      "user": 105,
+      "full_name": "Иван Петров",
+      "position": "Инженер",
+      "phone": "+7 900 000-00-05",
+      "email": "employee@example.com",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 106,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$demo_salt_2026$zy7qlHTFuf1xmPhKeh6JiitaxHtHh9iPMiTLNdIbrcU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "engineer",
+      "first_name": "",
+      "last_name": "",
+      "email": "engineer@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:00:00Z",
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.employee",
+    "pk": 106,
+    "fields": {
+      "user": 106,
+      "full_name": "Дмитрий Соколов",
+      "position": "Ведущий инженер",
+      "phone": "+7 900 000-00-06",
+      "email": "engineer@example.com",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 107,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$demo_salt_2026$zy7qlHTFuf1xmPhKeh6JiitaxHtHh9iPMiTLNdIbrcU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "sales_employee",
+      "first_name": "",
+      "last_name": "",
+      "email": "sales.employee@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:00:00Z",
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.employee",
+    "pk": 107,
+    "fields": {
+      "user": 107,
+      "full_name": "Екатерина Морозова",
+      "position": "Менеджер по продажам",
+      "phone": "+7 900 000-00-07",
+      "email": "sales.employee@example.com",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 108,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$demo_salt_2026$zy7qlHTFuf1xmPhKeh6JiitaxHtHh9iPMiTLNdIbrcU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "client",
+      "first_name": "",
+      "last_name": "",
+      "email": "client@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:00:00Z",
+      "groups": [
+        4
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.employee",
+    "pk": 108,
+    "fields": {
+      "user": 108,
+      "full_name": "Алексей Клиент",
+      "position": "Клиент",
+      "phone": "+7 900 000-00-08",
+      "email": "client@example.com",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 109,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$demo_salt_2026$zy7qlHTFuf1xmPhKeh6JiitaxHtHh9iPMiTLNdIbrcU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "client_acme",
+      "first_name": "",
+      "last_name": "",
+      "email": "client.acme@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:00:00Z",
+      "groups": [
+        4
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.employee",
+    "pk": 109,
+    "fields": {
+      "user": 109,
+      "full_name": "Мария Волкова",
+      "position": "Клиент ACME",
+      "phone": "+7 900 000-00-09",
+      "email": "client.acme@example.com",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 110,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$demo_salt_2026$zy7qlHTFuf1xmPhKeh6JiitaxHtHh9iPMiTLNdIbrcU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "client_beta",
+      "first_name": "",
+      "last_name": "",
+      "email": "client.beta@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:00:00Z",
+      "groups": [
+        4
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.employee",
+    "pk": 110,
+    "fields": {
+      "user": 110,
+      "full_name": "Никита Кузнецов",
+      "position": "Клиент Beta",
+      "phone": "+7 900 000-00-10",
+      "email": "client.beta@example.com",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
     "model": "fleet.car",
     "pk": 1,
     "fields": {
       "brand_model": "Toyota Camry",
       "vin": "JTNB11HK0J3000001",
       "color": "Белый",
-      "type": "Sedan",
-      "status": "available",
-      "created_at": "2026-04-09T00:00:00Z",
-      "updated_at": "2026-04-09T00:00:00Z"
+      "type": "Седан",
+      "status": "assigned",
+      "current_mileage": 48600,
+      "next_service_date": "2026-07-23",
+      "next_service_mileage": 55000,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
     }
   },
   {
@@ -43,10 +384,13 @@
       "brand_model": "Skoda Octavia",
       "vin": "TMBJJ7NE0L0000002",
       "color": "Серый",
-      "type": "Sedan",
+      "type": "Лифтбек",
       "status": "maintenance",
-      "created_at": "2026-04-09T00:00:00Z",
-      "updated_at": "2026-04-09T00:00:00Z"
+      "current_mileage": 91200,
+      "next_service_date": "2026-05-09",
+      "next_service_mileage": 90000,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
     }
   },
   {
@@ -56,10 +400,1421 @@
       "brand_model": "Volkswagen Tiguan",
       "vin": "WVGZZZ5NZJW000003",
       "color": "Чёрный",
-      "type": "SUV",
+      "type": "Кроссовер",
+      "status": "assigned",
+      "current_mileage": 63500,
+      "next_service_date": "2026-06-28",
+      "next_service_mileage": 70000,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.car",
+    "pk": 4,
+    "fields": {
+      "brand_model": "Toyota Corolla",
+      "vin": "JTDBR32E720012345",
+      "color": "Белый",
+      "type": "Седан",
+      "status": "assigned",
+      "current_mileage": 38500,
+      "next_service_date": "2026-08-12",
+      "next_service_mileage": 45000,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.car",
+    "pk": 5,
+    "fields": {
+      "brand_model": "Kia Rio",
+      "vin": "KNADM4A39D6123456",
+      "color": "Серебристый",
+      "type": "Седан",
+      "status": "assigned",
+      "current_mileage": 52100,
+      "next_service_date": "2026-07-08",
+      "next_service_mileage": 60000,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.car",
+    "pk": 6,
+    "fields": {
+      "brand_model": "Hyundai Solaris",
+      "vin": "KMHCT41DENU123456",
+      "color": "Синий",
+      "type": "Седан",
+      "status": "assigned",
+      "current_mileage": 44700,
+      "next_service_date": "2026-08-02",
+      "next_service_mileage": 50000,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.car",
+    "pk": 7,
+    "fields": {
+      "brand_model": "Volkswagen Polo",
+      "vin": "WVWZZZ6RZDY123456",
+      "color": "Серый",
+      "type": "Седан",
+      "status": "assigned",
+      "current_mileage": 61200,
+      "next_service_date": "2026-06-23",
+      "next_service_mileage": 70000,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.car",
+    "pk": 8,
+    "fields": {
+      "brand_model": "Skoda Rapid",
+      "vin": "TMBEG6NH8J5123456",
+      "color": "Белый",
+      "type": "Лифтбек",
+      "status": "assigned",
+      "current_mileage": 29800,
+      "next_service_date": "2026-07-18",
+      "next_service_mileage": 35000,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.car",
+    "pk": 9,
+    "fields": {
+      "brand_model": "Nissan Qashqai",
+      "vin": "SJNFAAJ10U1234567",
+      "color": "Чёрный",
+      "type": "Кроссовер",
+      "status": "maintenance",
+      "current_mileage": 73400,
+      "next_service_date": "2026-06-18",
+      "next_service_mileage": 80000,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.car",
+    "pk": 10,
+    "fields": {
+      "brand_model": "Ford Focus",
+      "vin": "WF0MXXGCDM8R12345",
+      "color": "Красный",
+      "type": "Хэтчбек",
       "status": "available",
-      "created_at": "2026-04-09T00:00:00Z",
-      "updated_at": "2026-04-09T00:00:00Z"
+      "current_mileage": 68400,
+      "next_service_date": "2026-07-03",
+      "next_service_mileage": 75000,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.car",
+    "pk": 11,
+    "fields": {
+      "brand_model": "BMW 320i",
+      "vin": "WBA8A310X0K123456",
+      "color": "Чёрный",
+      "type": "Седан",
+      "status": "available",
+      "current_mileage": 25600,
+      "next_service_date": "2026-08-07",
+      "next_service_mileage": 30000,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.car",
+    "pk": 12,
+    "fields": {
+      "brand_model": "Mercedes-Benz C 200",
+      "vin": "WDD2050421R123456",
+      "color": "Серебристый",
+      "type": "Седан",
+      "status": "maintenance",
+      "current_mileage": 33400,
+      "next_service_date": "2026-07-28",
+      "next_service_mileage": 40000,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.car",
+    "pk": 13,
+    "fields": {
+      "brand_model": "Tesla Model 3",
+      "vin": "5YJ3E1EA7KF123456",
+      "color": "Белый",
+      "type": "Седан",
+      "status": "available",
+      "current_mileage": 18700,
+      "next_service_date": "2026-09-11",
+      "next_service_mileage": 30000,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.car",
+    "pk": 14,
+    "fields": {
+      "brand_model": "Lada Vesta",
+      "vin": "XTA211240K0123456",
+      "color": "Серебристый",
+      "type": "Седан",
+      "status": "available",
+      "current_mileage": 41200,
+      "next_service_date": "2026-07-13",
+      "next_service_mileage": 50000,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.car",
+    "pk": 15,
+    "fields": {
+      "brand_model": "Renault Duster",
+      "vin": "VF1HSRCLH53612345",
+      "color": "Зелёный",
+      "type": "Кроссовер",
+      "status": "available",
+      "current_mileage": 55900,
+      "next_service_date": "2026-08-17",
+      "next_service_mileage": 65000,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 1,
+    "fields": {
+      "car": 1,
+      "request": null,
+      "kind": "service",
+      "service_date": "2025-12-18",
+      "title": "Плановое ТО",
+      "description": "Замена масла, фильтров, диагностика ходовой части и тормозной системы.",
+      "contractor": "Автоцентр Север",
+      "mileage": 36600,
+      "cost": "15100.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 2,
+    "fields": {
+      "car": 1,
+      "request": null,
+      "kind": "repair",
+      "service_date": "2026-03-02",
+      "title": "Ремонт",
+      "description": "Замена передних тормозных колодок.",
+      "contractor": "Fleet Service",
+      "mileage": 44100,
+      "cost": "19350.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 3,
+    "fields": {
+      "car": 2,
+      "request": null,
+      "kind": "service",
+      "service_date": "2025-12-21",
+      "title": "Плановое ТО",
+      "description": "Замена масла, фильтров, диагностика ходовой части и тормозной системы.",
+      "contractor": "Автоцентр Север",
+      "mileage": 79200,
+      "cost": "15700.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 4,
+    "fields": {
+      "car": 2,
+      "request": null,
+      "kind": "repair",
+      "service_date": "2026-03-04",
+      "title": "Ремонт",
+      "description": "Ремонт скола лобового стекла.",
+      "contractor": "Fleet Service",
+      "mileage": 86700,
+      "cost": "20200.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 5,
+    "fields": {
+      "car": 3,
+      "request": null,
+      "kind": "service",
+      "service_date": "2025-12-24",
+      "title": "Плановое ТО",
+      "description": "Замена масла, фильтров, диагностика ходовой части и тормозной системы.",
+      "contractor": "Автоцентр Север",
+      "mileage": 51500,
+      "cost": "16300.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 6,
+    "fields": {
+      "car": 3,
+      "request": null,
+      "kind": "repair",
+      "service_date": "2026-03-06",
+      "title": "Ремонт",
+      "description": "Замена аккумулятора и проверка генератора.",
+      "contractor": "Fleet Service",
+      "mileage": 59000,
+      "cost": "21050.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 7,
+    "fields": {
+      "car": 4,
+      "request": null,
+      "kind": "service",
+      "service_date": "2025-12-27",
+      "title": "Плановое ТО",
+      "description": "Замена масла, фильтров, диагностика ходовой части и тормозной системы.",
+      "contractor": "Автоцентр Север",
+      "mileage": 26500,
+      "cost": "16900.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 8,
+    "fields": {
+      "car": 4,
+      "request": null,
+      "kind": "repair",
+      "service_date": "2026-03-08",
+      "title": "Ремонт",
+      "description": "Ремонт подвески после диагностики.",
+      "contractor": "Fleet Service",
+      "mileage": 34000,
+      "cost": "21900.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 9,
+    "fields": {
+      "car": 5,
+      "request": null,
+      "kind": "service",
+      "service_date": "2025-12-30",
+      "title": "Плановое ТО",
+      "description": "Замена масла, фильтров, диагностика ходовой части и тормозной системы.",
+      "contractor": "Автоцентр Север",
+      "mileage": 40100,
+      "cost": "17500.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 10,
+    "fields": {
+      "car": 5,
+      "request": null,
+      "kind": "repair",
+      "service_date": "2026-03-10",
+      "title": "Ремонт",
+      "description": "Восстановление лакокрасочного покрытия заднего бампера.",
+      "contractor": "Fleet Service",
+      "mileage": 47600,
+      "cost": "22750.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 11,
+    "fields": {
+      "car": 6,
+      "request": null,
+      "kind": "service",
+      "service_date": "2026-01-02",
+      "title": "Плановое ТО",
+      "description": "Замена масла, фильтров, диагностика ходовой части и тормозной системы.",
+      "contractor": "Автоцентр Север",
+      "mileage": 32700,
+      "cost": "18100.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 12,
+    "fields": {
+      "car": 6,
+      "request": null,
+      "kind": "repair",
+      "service_date": "2026-03-12",
+      "title": "Ремонт",
+      "description": "Замена комплекта свечей зажигания.",
+      "contractor": "Fleet Service",
+      "mileage": 40200,
+      "cost": "23600.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 13,
+    "fields": {
+      "car": 7,
+      "request": null,
+      "kind": "service",
+      "service_date": "2026-01-05",
+      "title": "Плановое ТО",
+      "description": "Замена масла, фильтров, диагностика ходовой части и тормозной системы.",
+      "contractor": "Автоцентр Север",
+      "mileage": 49200,
+      "cost": "18700.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 14,
+    "fields": {
+      "car": 7,
+      "request": null,
+      "kind": "repair",
+      "service_date": "2026-03-14",
+      "title": "Ремонт",
+      "description": "Ремонт кондиционера и заправка хладагента.",
+      "contractor": "Fleet Service",
+      "mileage": 56700,
+      "cost": "24450.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 15,
+    "fields": {
+      "car": 8,
+      "request": null,
+      "kind": "service",
+      "service_date": "2026-01-08",
+      "title": "Плановое ТО",
+      "description": "Замена масла, фильтров, диагностика ходовой части и тормозной системы.",
+      "contractor": "Автоцентр Север",
+      "mileage": 17800,
+      "cost": "19300.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 16,
+    "fields": {
+      "car": 8,
+      "request": null,
+      "kind": "repair",
+      "service_date": "2026-03-16",
+      "title": "Ремонт",
+      "description": "Замена правого бокового зеркала.",
+      "contractor": "Fleet Service",
+      "mileage": 25300,
+      "cost": "25300.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 17,
+    "fields": {
+      "car": 9,
+      "request": null,
+      "kind": "service",
+      "service_date": "2026-01-11",
+      "title": "Плановое ТО",
+      "description": "Замена масла, фильтров, диагностика ходовой части и тормозной системы.",
+      "contractor": "Автоцентр Север",
+      "mileage": 61400,
+      "cost": "19900.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 18,
+    "fields": {
+      "car": 9,
+      "request": null,
+      "kind": "repair",
+      "service_date": "2026-03-18",
+      "title": "Ремонт",
+      "description": "Замена передних тормозных колодок.",
+      "contractor": "Fleet Service",
+      "mileage": 68900,
+      "cost": "26150.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 19,
+    "fields": {
+      "car": 10,
+      "request": null,
+      "kind": "service",
+      "service_date": "2026-01-14",
+      "title": "Плановое ТО",
+      "description": "Замена масла, фильтров, диагностика ходовой части и тормозной системы.",
+      "contractor": "Автоцентр Север",
+      "mileage": 56400,
+      "cost": "20500.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 20,
+    "fields": {
+      "car": 10,
+      "request": null,
+      "kind": "repair",
+      "service_date": "2026-03-20",
+      "title": "Ремонт",
+      "description": "Ремонт скола лобового стекла.",
+      "contractor": "Fleet Service",
+      "mileage": 63900,
+      "cost": "27000.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 21,
+    "fields": {
+      "car": 11,
+      "request": null,
+      "kind": "service",
+      "service_date": "2026-01-17",
+      "title": "Плановое ТО",
+      "description": "Замена масла, фильтров, диагностика ходовой части и тормозной системы.",
+      "contractor": "Автоцентр Север",
+      "mileage": 13600,
+      "cost": "21100.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 22,
+    "fields": {
+      "car": 11,
+      "request": null,
+      "kind": "repair",
+      "service_date": "2026-03-22",
+      "title": "Ремонт",
+      "description": "Замена аккумулятора и проверка генератора.",
+      "contractor": "Fleet Service",
+      "mileage": 21100,
+      "cost": "27850.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 23,
+    "fields": {
+      "car": 12,
+      "request": null,
+      "kind": "service",
+      "service_date": "2026-01-20",
+      "title": "Плановое ТО",
+      "description": "Замена масла, фильтров, диагностика ходовой части и тормозной системы.",
+      "contractor": "Автоцентр Север",
+      "mileage": 21400,
+      "cost": "21700.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 24,
+    "fields": {
+      "car": 12,
+      "request": null,
+      "kind": "repair",
+      "service_date": "2026-03-24",
+      "title": "Ремонт",
+      "description": "Ремонт подвески после диагностики.",
+      "contractor": "Fleet Service",
+      "mileage": 28900,
+      "cost": "28700.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 25,
+    "fields": {
+      "car": 13,
+      "request": null,
+      "kind": "service",
+      "service_date": "2026-01-23",
+      "title": "Плановое ТО",
+      "description": "Замена масла, фильтров, диагностика ходовой части и тормозной системы.",
+      "contractor": "Автоцентр Север",
+      "mileage": 6700,
+      "cost": "22300.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 26,
+    "fields": {
+      "car": 13,
+      "request": null,
+      "kind": "repair",
+      "service_date": "2026-03-26",
+      "title": "Ремонт",
+      "description": "Восстановление лакокрасочного покрытия заднего бампера.",
+      "contractor": "Fleet Service",
+      "mileage": 14200,
+      "cost": "29550.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 27,
+    "fields": {
+      "car": 14,
+      "request": null,
+      "kind": "service",
+      "service_date": "2026-01-26",
+      "title": "Плановое ТО",
+      "description": "Замена масла, фильтров, диагностика ходовой части и тормозной системы.",
+      "contractor": "Автоцентр Север",
+      "mileage": 29200,
+      "cost": "22900.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 28,
+    "fields": {
+      "car": 14,
+      "request": null,
+      "kind": "repair",
+      "service_date": "2026-03-28",
+      "title": "Ремонт",
+      "description": "Замена комплекта свечей зажигания.",
+      "contractor": "Fleet Service",
+      "mileage": 36700,
+      "cost": "30400.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 29,
+    "fields": {
+      "car": 15,
+      "request": null,
+      "kind": "service",
+      "service_date": "2026-01-29",
+      "title": "Плановое ТО",
+      "description": "Замена масла, фильтров, диагностика ходовой части и тормозной системы.",
+      "contractor": "Автоцентр Север",
+      "mileage": 43900,
+      "cost": "23500.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "fleet.maintenancerecord",
+    "pk": 30,
+    "fields": {
+      "car": 15,
+      "request": null,
+      "kind": "repair",
+      "service_date": "2026-03-30",
+      "title": "Ремонт",
+      "description": "Ремонт кондиционера и заправка хладагента.",
+      "contractor": "Fleet Service",
+      "mileage": 51400,
+      "cost": "31250.00",
+      "created_by": 102,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 1,
+    "fields": {
+      "reason": "Подменный автомобиль на время ремонта личного авто",
+      "start_date": "2026-05-22",
+      "end_date": "2026-05-24",
+      "status": "pending",
+      "employee": 105,
+      "car": null,
+      "assigned_at": null,
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 2,
+    "fields": {
+      "reason": "Выезд на объект клиента",
+      "start_date": "2026-05-19",
+      "end_date": "2026-05-20",
+      "status": "pending",
+      "employee": 106,
+      "car": null,
+      "assigned_at": null,
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 3,
+    "fields": {
+      "reason": "Региональная встреча с партнёрами",
+      "start_date": "2026-05-21",
+      "end_date": "2026-05-23",
+      "status": "pending",
+      "employee": 107,
+      "car": null,
+      "assigned_at": null,
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 4,
+    "fields": {
+      "reason": "Автомобиль на период гарантийного ремонта",
+      "start_date": "2026-05-26",
+      "end_date": "2026-05-28",
+      "status": "pending",
+      "employee": 109,
+      "car": null,
+      "assigned_at": null,
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 5,
+    "fields": {
+      "reason": "Согласованная поездка в филиал",
+      "start_date": "2026-05-14",
+      "end_date": "2026-05-16",
+      "status": "approved",
+      "employee": 105,
+      "car": 1,
+      "assigned_at": "2026-05-14T09:00:00Z",
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 6,
+    "fields": {
+      "reason": "Сервисный выезд к корпоративному клиенту",
+      "start_date": "2026-05-14",
+      "end_date": "2026-05-15",
+      "status": "approved",
+      "employee": 106,
+      "car": 3,
+      "assigned_at": "2026-05-14T09:00:00Z",
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 7,
+    "fields": {
+      "reason": "Подменный автомобиль по клиентскому договору",
+      "start_date": "2026-05-14",
+      "end_date": "2026-05-17",
+      "status": "approved",
+      "employee": 108,
+      "car": 4,
+      "assigned_at": "2026-05-14T09:00:00Z",
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 8,
+    "fields": {
+      "reason": "Подменный автомобиль на время диагностики",
+      "start_date": "2026-05-14",
+      "end_date": "2026-05-16",
+      "status": "approved",
+      "employee": 110,
+      "car": 5,
+      "assigned_at": "2026-05-14T09:00:00Z",
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 9,
+    "fields": {
+      "reason": "Заявка без подтверждённой цели поездки",
+      "start_date": "2026-05-08",
+      "end_date": "2026-05-09",
+      "status": "rejected",
+      "employee": 107,
+      "car": null,
+      "assigned_at": null,
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 10,
+    "fields": {
+      "reason": "Нет свободного автомобиля нужного класса",
+      "start_date": "2026-05-30",
+      "end_date": "2026-05-31",
+      "status": "rejected",
+      "employee": 109,
+      "car": null,
+      "assigned_at": null,
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 11,
+    "fields": {
+      "reason": "Запрошен период сверх лимита",
+      "start_date": "2026-05-27",
+      "end_date": "2026-05-29",
+      "status": "rejected",
+      "employee": 105,
+      "car": null,
+      "assigned_at": null,
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 12,
+    "fields": {
+      "reason": "Отменена по инициативе клиента",
+      "start_date": "2026-05-11",
+      "end_date": "2026-05-12",
+      "status": "rejected",
+      "employee": 108,
+      "car": null,
+      "assigned_at": null,
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 13,
+    "fields": {
+      "reason": "Автомобиль не возвращён после выезда",
+      "start_date": "2026-05-08",
+      "end_date": "2026-05-12",
+      "status": "overdue",
+      "employee": 106,
+      "car": 6,
+      "assigned_at": "2026-05-14T09:00:00Z",
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 14,
+    "fields": {
+      "reason": "Просроченный возврат клиентского автомобиля",
+      "start_date": "2026-05-09",
+      "end_date": "2026-05-13",
+      "status": "overdue",
+      "employee": 110,
+      "car": 7,
+      "assigned_at": "2026-05-14T09:00:00Z",
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 15,
+    "fields": {
+      "reason": "Командировка продлена без закрытия заявки",
+      "start_date": "2026-05-06",
+      "end_date": "2026-05-11",
+      "status": "overdue",
+      "employee": 105,
+      "car": 8,
+      "assigned_at": "2026-05-14T09:00:00Z",
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 16,
+    "fields": {
+      "reason": "Задержка возврата после ремонта",
+      "start_date": "2026-05-07",
+      "end_date": "2026-05-13",
+      "status": "overdue",
+      "employee": 109,
+      "car": 9,
+      "assigned_at": "2026-05-14T09:00:00Z",
+      "returned_at": null,
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 17,
+    "fields": {
+      "reason": "Завершённая поездка на презентацию",
+      "start_date": "2026-04-22",
+      "end_date": "2026-04-24",
+      "status": "completed",
+      "employee": 107,
+      "car": 10,
+      "assigned_at": "2026-05-14T09:00:00Z",
+      "returned_at": "2026-05-14T18:00:00Z",
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 18,
+    "fields": {
+      "reason": "Возврат с замечаниями по кузову",
+      "start_date": "2026-04-25",
+      "end_date": "2026-04-27",
+      "status": "completed",
+      "employee": 105,
+      "car": 11,
+      "assigned_at": "2026-05-14T09:00:00Z",
+      "returned_at": "2026-05-14T18:00:00Z",
+      "return_defects": "Царапина на переднем бампере. Зоны повреждений: передняя часть.",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 19,
+    "fields": {
+      "reason": "Завершённая клиентская подмена без дефектов",
+      "start_date": "2026-04-28",
+      "end_date": "2026-04-30",
+      "status": "completed",
+      "employee": 108,
+      "car": 12,
+      "assigned_at": "2026-05-14T09:00:00Z",
+      "returned_at": "2026-05-14T18:00:00Z",
+      "return_defects": "",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.request",
+    "pk": 20,
+    "fields": {
+      "reason": "Возврат после выезда с повреждением диска",
+      "start_date": "2026-05-01",
+      "end_date": "2026-05-03",
+      "status": "completed",
+      "employee": 106,
+      "car": 13,
+      "assigned_at": "2026-05-14T09:00:00Z",
+      "returned_at": "2026-05-14T18:00:00Z",
+      "return_defects": "Повреждение правого переднего диска. Зоны повреждений: колёса.",
+      "attachment": "",
+      "attachment_original_name": "",
+      "rules_accepted": true,
+      "rules_accepted_at": "2026-05-13T09:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.reservation",
+    "pk": 1,
+    "fields": {
+      "request": 5,
+      "car": 1,
+      "employee": 105,
+      "start_date": "2026-05-14",
+      "end_date": "2026-05-16",
+      "status": "active",
+      "created_by": 102,
+      "cancelled_at": null,
+      "completed_at": null,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.reservation",
+    "pk": 2,
+    "fields": {
+      "request": 6,
+      "car": 3,
+      "employee": 106,
+      "start_date": "2026-05-14",
+      "end_date": "2026-05-15",
+      "status": "active",
+      "created_by": 102,
+      "cancelled_at": null,
+      "completed_at": null,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.reservation",
+    "pk": 3,
+    "fields": {
+      "request": 7,
+      "car": 4,
+      "employee": 108,
+      "start_date": "2026-05-14",
+      "end_date": "2026-05-17",
+      "status": "active",
+      "created_by": 102,
+      "cancelled_at": null,
+      "completed_at": null,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.reservation",
+    "pk": 4,
+    "fields": {
+      "request": 8,
+      "car": 5,
+      "employee": 110,
+      "start_date": "2026-05-14",
+      "end_date": "2026-05-16",
+      "status": "active",
+      "created_by": 102,
+      "cancelled_at": null,
+      "completed_at": null,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.reservation",
+    "pk": 5,
+    "fields": {
+      "request": 13,
+      "car": 6,
+      "employee": 106,
+      "start_date": "2026-05-08",
+      "end_date": "2026-05-12",
+      "status": "active",
+      "created_by": 102,
+      "cancelled_at": null,
+      "completed_at": null,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.reservation",
+    "pk": 6,
+    "fields": {
+      "request": 14,
+      "car": 7,
+      "employee": 110,
+      "start_date": "2026-05-09",
+      "end_date": "2026-05-13",
+      "status": "active",
+      "created_by": 102,
+      "cancelled_at": null,
+      "completed_at": null,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.reservation",
+    "pk": 7,
+    "fields": {
+      "request": 15,
+      "car": 8,
+      "employee": 105,
+      "start_date": "2026-05-06",
+      "end_date": "2026-05-11",
+      "status": "active",
+      "created_by": 102,
+      "cancelled_at": null,
+      "completed_at": null,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.reservation",
+    "pk": 8,
+    "fields": {
+      "request": 16,
+      "car": 9,
+      "employee": 109,
+      "start_date": "2026-05-07",
+      "end_date": "2026-05-13",
+      "status": "active",
+      "created_by": 102,
+      "cancelled_at": null,
+      "completed_at": null,
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.reservation",
+    "pk": 9,
+    "fields": {
+      "request": 17,
+      "car": 10,
+      "employee": 107,
+      "start_date": "2026-04-22",
+      "end_date": "2026-04-24",
+      "status": "completed",
+      "created_by": 102,
+      "cancelled_at": null,
+      "completed_at": "2026-05-14T18:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.reservation",
+    "pk": 10,
+    "fields": {
+      "request": 18,
+      "car": 11,
+      "employee": 105,
+      "start_date": "2026-04-25",
+      "end_date": "2026-04-27",
+      "status": "completed",
+      "created_by": 102,
+      "cancelled_at": null,
+      "completed_at": "2026-05-14T18:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.reservation",
+    "pk": 11,
+    "fields": {
+      "request": 19,
+      "car": 12,
+      "employee": 108,
+      "start_date": "2026-04-28",
+      "end_date": "2026-04-30",
+      "status": "completed",
+      "created_by": 102,
+      "cancelled_at": null,
+      "completed_at": "2026-05-14T18:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "requests.reservation",
+    "pk": 12,
+    "fields": {
+      "request": 20,
+      "car": 13,
+      "employee": 106,
+      "start_date": "2026-05-01",
+      "end_date": "2026-05-03",
+      "status": "completed",
+      "created_by": 102,
+      "cancelled_at": null,
+      "completed_at": "2026-05-14T18:00:00Z",
+      "created_at": "2026-05-14T00:00:00Z",
+      "updated_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "reports.report",
+    "pk": 1,
+    "fields": {
+      "name": "Отчёт по заявке #17",
+      "request": 17,
+      "car": 10,
+      "employee": 107,
+      "start_date": "2026-04-22",
+      "end_date": "2026-04-24",
+      "created_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "reports.report",
+    "pk": 2,
+    "fields": {
+      "name": "Отчёт по заявке #18",
+      "request": 18,
+      "car": 11,
+      "employee": 105,
+      "start_date": "2026-04-25",
+      "end_date": "2026-04-27",
+      "created_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "reports.report",
+    "pk": 3,
+    "fields": {
+      "name": "Отчёт по заявке #19",
+      "request": 19,
+      "car": 12,
+      "employee": 108,
+      "start_date": "2026-04-28",
+      "end_date": "2026-04-30",
+      "created_at": "2026-05-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "reports.report",
+    "pk": 4,
+    "fields": {
+      "name": "Отчёт по заявке #20",
+      "request": 20,
+      "car": 13,
+      "employee": 106,
+      "start_date": "2026-05-01",
+      "end_date": "2026-05-03",
+      "created_at": "2026-05-14T00:00:00Z"
     }
   }
 ]
