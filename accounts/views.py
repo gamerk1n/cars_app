@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from accounts.forms import UserCreateForm, UserUpdateForm
 from accounts.models import Employee
+from accounts.roles import REQUESTER_ROLES, SYSTEM_ROLES, role_label
 from audit.models import ActionLog
 from core.auth import user_in_groups
 
@@ -16,8 +17,8 @@ User = get_user_model()
 
 
 def ensure_employee_profile(user, *, full_name: str | None = None) -> None:
-    employee_group = user.groups.filter(name="employee").exists()
-    if not employee_group:
+    requester_group = user.groups.filter(name__in=REQUESTER_ROLES).exists()
+    if not requester_group:
         return
 
     resolved_full_name = (full_name or "").strip() or user.get_full_name() or user.username
@@ -42,13 +43,21 @@ def ensure_employee_profile(user, *, full_name: str | None = None) -> None:
 def sysadmin_dashboard(request):
     if not user_in_groups(request.user, ["sys_admin"]):
         raise PermissionDenied
-    groups = Group.objects.filter(name__in=["employee", "service_admin", "sys_admin"]).order_by("name")
+    groups = Group.objects.filter(name__in=SYSTEM_ROLES).order_by("name")
     counts = {g.name: g.user_set.count() for g in groups}
+    role_cards = [
+        {
+            "name": role_name,
+            "label": role_label(role_name),
+            "count": counts.get(role_name, 0),
+        }
+        for role_name in SYSTEM_ROLES
+    ]
     total_users = User.objects.count()
     return render(
         request,
         "sysadmin/dashboard.html",
-        {"counts": counts, "total_users": total_users},
+        {"role_cards": role_cards, "total_users": total_users},
     )
 
 

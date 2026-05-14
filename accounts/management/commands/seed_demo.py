@@ -4,6 +4,7 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 
 from accounts.models import Employee
+from accounts.roles import CLIENT, EMPLOYEE, SERVICE_ADMIN, SYS_ADMIN, SYSTEM_ROLES
 from fleet.models import Car
 from requests.models import Request
 from requests.services import approve_request, assign_car, complete_request
@@ -17,12 +18,13 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Ensure groups exist
-        for name in ["employee", "service_admin", "sys_admin"]:
+        for name in SYSTEM_ROLES:
             Group.objects.get_or_create(name=name)
 
-        employee_group = Group.objects.get(name="employee")
-        service_admin_group = Group.objects.get(name="service_admin")
-        sys_admin_group = Group.objects.get(name="sys_admin")
+        employee_group = Group.objects.get(name=EMPLOYEE)
+        client_group = Group.objects.get(name=CLIENT)
+        service_admin_group = Group.objects.get(name=SERVICE_ADMIN)
+        sys_admin_group = Group.objects.get(name=SYS_ADMIN)
 
         def upsert_user(username: str, password: str, groups: list[Group]):
             user, created = User.objects.get_or_create(username=username, defaults={"is_active": True})
@@ -33,6 +35,7 @@ class Command(BaseCommand):
             return user
 
         employee_user = upsert_user("employee", "demo12345", [employee_group])
+        client_user = upsert_user("client", "demo12345", [client_group])
         service_admin_user = upsert_user("service_admin", "demo12345", [service_admin_group])
         sys_admin_user = upsert_user("sys_admin", "demo12345", [sys_admin_group])
 
@@ -43,6 +46,15 @@ class Command(BaseCommand):
                 "position": "Инженер",
                 "phone": "+7 900 000-00-00",
                 "email": "employee@example.com",
+            },
+        )
+        Employee.objects.get_or_create(
+            user=client_user,
+            defaults={
+                "full_name": "Алексей Клиент",
+                "position": "Клиент",
+                "phone": "+7 900 000-00-03",
+                "email": "client@example.com",
             },
         )
         Employee.objects.get_or_create(
@@ -113,4 +125,4 @@ class Command(BaseCommand):
             assign_car(req=completed_req, car=car3 if car3.status == Car.Status.AVAILABLE else car1, actor=service_admin_user)
             complete_request(req=completed_req, actor=service_admin_user)
 
-        self.stdout.write(self.style.SUCCESS("Seed complete. Login/password: employee/demo12345, service_admin/demo12345, sys_admin/demo12345"))
+        self.stdout.write(self.style.SUCCESS("Seed complete. Login/password: employee/demo12345, client/demo12345, service_admin/demo12345, sys_admin/demo12345"))
