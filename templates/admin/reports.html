@@ -63,6 +63,74 @@
     </div>
   </div>
 
+  <div class="row" style="margin-top: 14px;">
+    <div class="card" style="flex: 1;">
+      <div class="muted">Загрузка автопарка</div>
+      <div style="font-size: 28px; font-weight: 800; margin-top: 8px;">
+        {{ fleet_metrics.utilization_percent }}%
+      </div>
+      <div class="muted">
+        {{ fleet_metrics.busy_car_days }} занято из {{ fleet_metrics.available_car_days }} машино-дней
+      </div>
+      <div class="muted">
+        Период: {{ fleet_metrics.period_start }} → {{ fleet_metrics.period_end }},
+        простой: {{ fleet_metrics.idle_car_days }} машино-дней
+      </div>
+    </div>
+
+    <div class="card" style="flex: 1;">
+      <div class="muted">Средние показатели</div>
+      <div style="margin-top: 10px; display: grid; gap: 6px;">
+        <div class="row row--between">
+          <span class="muted">Средняя длительность заявки</span>
+          <span class="pill">{{ fleet_metrics.average_request_days }} дн.</span>
+        </div>
+        <div class="row row--between">
+          <span class="muted">Среднесуточный пробег</span>
+          <span class="pill">{{ fleet_metrics.average_daily_mileage|default_if_none:"—" }} км/день</span>
+        </div>
+        <div class="row row--between">
+          <span class="muted">Суммарный пробег</span>
+          <span class="pill">{{ fleet_metrics.total_mileage|default_if_none:"—" }} км</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 14px;">
+    <div class="card" style="flex: 1;">
+      <div class="muted">Просрочки возврата</div>
+      <div style="margin-top: 10px; display: grid; gap: 6px;">
+        <div class="row row--between">
+          <span class="muted">Просроченных заявок</span>
+          <span class="pill">{{ fleet_metrics.overdue_count }}</span>
+        </div>
+        <div class="row row--between">
+          <span class="muted">Средняя просрочка</span>
+          <span class="pill">{{ fleet_metrics.average_overdue_days }} дн.</span>
+        </div>
+        <div class="row row--between">
+          <span class="muted">Максимальная просрочка</span>
+          <span class="pill">{{ fleet_metrics.max_overdue_days }} дн.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="flex: 1;">
+      <div class="muted">Топ загрузки автомобилей</div>
+      <div style="margin-top: 10px; display: grid; gap: 6px;">
+        {% for x in fleet_metrics.top_cars_by_utilization %}
+          <div class="row row--between">
+            <span class="muted">{{ x.brand_model }} ({{ x.vin }})</span>
+            <span class="pill">{{ x.utilization_percent }}% / {{ x.busy_days }} дн.</span>
+          </div>
+        {% empty %}
+          <div class="muted">Нет данных</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
   <div class="card" style="margin-top: 14px;">
     <form method="get" class="row">
       <input class="input" type="date" name="start_date" value="{{ start_date }}" />

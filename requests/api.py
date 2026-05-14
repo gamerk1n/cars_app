@@ -2,6 +2,7 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from accounts.roles import SERVICE_ADMIN, SYS_ADMIN
 from core.permissions import IsEmployee, IsServiceAdmin
 from requests.models import Request
 from requests.notifications import notify_request_event
@@ -28,9 +29,9 @@ class RequestViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         qs = Request.objects.select_related("employee", "car").all()
         user = self.request.user
-        if user.is_superuser or user.groups.filter(name="sys_admin").exists():
+        if user.is_superuser or user.groups.filter(name=SYS_ADMIN).exists():
             return qs
-        if user.groups.filter(name="service_admin").exists():
+        if user.groups.filter(name=SERVICE_ADMIN).exists():
             return qs
         return qs.filter(employee__user=user)
 

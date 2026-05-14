@@ -503,11 +503,16 @@ class RequestAttachmentViewsTests(TestCase):
         self.addCleanup(override.disable)
 
         self.employee_group, _ = Group.objects.get_or_create(name="employee")
+        self.client_group, _ = Group.objects.get_or_create(name="client")
         self.service_group, _ = Group.objects.get_or_create(name="service_admin")
 
         self.user = User.objects.create_user(username="emp", password="pw")
         self.user.groups.add(self.employee_group)
         self.employee = Employee.objects.create(user=self.user, full_name="Employee")
+
+        self.client_user = User.objects.create_user(username="client", password="pw")
+        self.client_user.groups.add(self.client_group)
+        self.client_employee = Employee.objects.create(user=self.client_user, full_name="Client")
 
         self.admin = User.objects.create_user(username="svc", password="pw")
         self.admin.groups.add(self.service_group)
@@ -542,6 +547,29 @@ class RequestAttachmentViewsTests(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(b"".join(res.streaming_content), b"route file")
         res.close()
+
+    def test_client_can_create_request_with_attachment_and_rules(self):
+        client = Client()
+        client.force_login(self.client_user)
+        attachment = SimpleUploadedFile(
+            "client-route.txt", b"client route file", content_type="text/plain"
+        )
+
+        res = client.post(
+            "/requests/new/",
+            data={
+                "start_date": date.today(),
+                "end_date": date.today() + timedelta(days=1),
+                "reason": "client trip",
+                "attachment": attachment,
+                "rules_accepted": "on",
+            },
+        )
+
+        self.assertEqual(res.status_code, 302)
+        req = Request.objects.get(reason="client trip")
+        self.assertEqual(req.employee, self.client_employee)
+        self.assertEqual(req.attachment_original_name, "client-route.txt")
 
     def test_create_request_requires_rules_acceptance(self):
         client = Client()
@@ -670,6 +698,7 @@ class RequestAttachmentViewsTests(TestCase):
 class RequestAPITests(TestCase):
     def setUp(self):
         self.employee_group, _ = Group.objects.get_or_create(name="employee")
+        self.client_group, _ = Group.objects.get_or_create(name="client")
         self.service_group, _ = Group.objects.get_or_create(name="service_admin")
 
         self.user1 = User.objects.create_user(username="emp1", password="pw1")
@@ -697,6 +726,26 @@ class RequestAPITests(TestCase):
             start_date=start,
             end_date=end,
         )
+
+    def test_client_role_sees_only_own_requests(self):
+        client_user = User.objects.create_user(username="client", password="pw")
+        client_user.groups.add(self.client_group)
+        client_employee = Employee.objects.create(user=client_user, full_name="Client")
+        client_request = Request.objects.create(
+            employee=client_employee,
+            reason="client",
+            start_date=date.today(),
+            end_date=date.today() + timedelta(days=1),
+        )
+
+        client = Client()
+        client.force_login(client_user)
+        res = client.get("/api/requests/", HTTP_ACCEPT="application/json")
+
+        self.assertEqual(res.status_code, 200)
+        data = json.loads(res.content)
+        ids = {row["id"] for row in data["results"]}
+        self.assertEqual(ids, {client_request.id})
 
     def test_employee_sees_only_own_requests(self):
         client = Client()

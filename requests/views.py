@@ -9,6 +9,7 @@ from django.http import FileResponse, Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
+from accounts.roles import REQUESTER_ROLES, SERVICE_ADMIN, SYS_ADMIN
 from core.auth import user_in_groups
 from fleet.models import Car
 from requests.forms import RequestCreateForm, VehicleInspectionForm
@@ -29,10 +30,10 @@ from requests.services import (
 
 @login_required
 def employee_dashboard(request):
-    if not user_in_groups(request.user, ["employee"]):
+    if not user_in_groups(request.user, REQUESTER_ROLES):
         raise PermissionDenied
     if not hasattr(request.user, "employee"):
-        messages.error(request, "Для пользователя не создан профиль сотрудника.")
+        messages.error(request, "Для пользователя не создан профиль заявителя.")
         return redirect("employee_requests")
 
     qs = Request.objects.filter(employee__user=request.user)
@@ -50,10 +51,10 @@ def employee_dashboard(request):
 
 @login_required
 def employee_requests(request):
-    if not user_in_groups(request.user, ["employee", "service_admin", "sys_admin"]):
+    if not user_in_groups(request.user, (*REQUESTER_ROLES, SERVICE_ADMIN, SYS_ADMIN)):
         raise PermissionDenied
     qs = Request.objects.select_related("employee", "car")
-    if not user_in_groups(request.user, ["service_admin", "sys_admin"]):
+    if not user_in_groups(request.user, [SERVICE_ADMIN, SYS_ADMIN]):
         qs = qs.filter(employee__user=request.user)
 
     status = request.GET.get("status") or ""
@@ -77,20 +78,21 @@ def employee_requests(request):
             "status": status,
             "q": q,
             "statuses": Request.Status.choices,
+            "can_create_request": user_in_groups(request.user, REQUESTER_ROLES),
         },
     )
 
 
 @login_required
 def employee_request_create(request):
-    if not user_in_groups(request.user, ["employee"]):
+    if not user_in_groups(request.user, REQUESTER_ROLES):
         raise PermissionDenied
     if request.method == "POST":
         form = RequestCreateForm(request.POST, request.FILES)
         if form.is_valid():
             req: Request = form.save(commit=False)
             if not hasattr(request.user, "employee"):
-                messages.error(request, "Для пользователя не создан профиль сотрудника.")
+                messages.error(request, "Для пользователя не создан профиль заявителя.")
             else:
                 req.employee = request.user.employee
                 req.status = Request.Status.PENDING
@@ -119,7 +121,7 @@ def request_rules(request):
 @login_required
 def request_attachment(request, pk: int):
     req = get_object_or_404(Request.objects.select_related("employee__user"), pk=pk)
-    can_view_all = user_in_groups(request.user, ["service_admin", "sys_admin"])
+    can_view_all = user_in_groups(request.user, [SERVICE_ADMIN, SYS_ADMIN])
     is_owner = req.employee.user_id == request.user.id
     if not can_view_all and not is_owner:
         raise PermissionDenied
@@ -132,7 +134,7 @@ def request_attachment(request, pk: int):
 
 @login_required
 def admin_dashboard(request):
-    if not user_in_groups(request.user, ["service_admin"]):
+    if not user_in_groups(request.user, [SERVICE_ADMIN]):
         raise PermissionDenied
     by_status = (
         Request.objects.values("status").annotate(c=Count("id")).order_by("status")
@@ -154,7 +156,7 @@ def admin_dashboard(request):
 
 @login_required
 def admin_requests(request):
-    if not user_in_groups(request.user, ["service_admin"]):
+    if not user_in_groups(request.user, [SERVICE_ADMIN]):
         raise PermissionDenied
     issue_inspections = VehicleInspection.objects.filter(
         request_id=OuterRef("pk"),
@@ -205,7 +207,7 @@ def admin_requests(request):
 
 @login_required
 def admin_request_approve(request, pk: int):
-    if not user_in_groups(request.user, ["service_admin"]):
+    if not user_in_groups(request.user, [SERVICE_ADMIN]):
         raise PermissionDenied
     req = get_object_or_404(Request, pk=pk)
     try:
@@ -218,7 +220,7 @@ def admin_request_approve(request, pk: int):
 
 @login_required
 def admin_request_auto_approve(request, pk: int):
-    if not user_in_groups(request.user, ["service_admin"]):
+    if not user_in_groups(request.user, [SERVICE_ADMIN]):
         raise PermissionDenied
     req = get_object_or_404(Request.objects.select_related("employee__user", "car"), pk=pk)
     try:
@@ -234,7 +236,7 @@ def admin_request_auto_approve(request, pk: int):
 
 @login_required
 def admin_request_reject(request, pk: int):
-    if not user_in_groups(request.user, ["service_admin"]):
+    if not user_in_groups(request.user, [SERVICE_ADMIN]):
         raise PermissionDenied
     req = get_object_or_404(Request, pk=pk)
     try:
@@ -247,7 +249,7 @@ def admin_request_reject(request, pk: int):
 
 @login_required
 def admin_request_pending(request, pk: int):
-    if not user_in_groups(request.user, ["service_admin"]):
+    if not user_in_groups(request.user, [SERVICE_ADMIN]):
         raise PermissionDenied
     req = get_object_or_404(Request, pk=pk)
     try:
@@ -260,7 +262,7 @@ def admin_request_pending(request, pk: int):
 
 @login_required
 def admin_request_assign(request, pk: int):
-    if not user_in_groups(request.user, ["service_admin"]):
+    if not user_in_groups(request.user, [SERVICE_ADMIN]):
         raise PermissionDenied
     req = get_object_or_404(Request.objects.select_related("car"), pk=pk)
     car_id = request.POST.get("car_id")
@@ -278,7 +280,7 @@ def admin_request_assign(request, pk: int):
 
 @login_required
 def admin_request_auto_assign(request, pk: int):
-    if not user_in_groups(request.user, ["service_admin"]):
+    if not user_in_groups(request.user, [SERVICE_ADMIN]):
         raise PermissionDenied
     req = get_object_or_404(Request.objects.select_related("car"), pk=pk)
     try:
@@ -291,7 +293,7 @@ def admin_request_auto_assign(request, pk: int):
 
 @login_required
 def admin_request_issue_inspection(request, pk: int):
-    if not user_in_groups(request.user, ["service_admin"]):
+    if not user_in_groups(request.user, [SERVICE_ADMIN]):
         raise PermissionDenied
     req = get_object_or_404(Request.objects.select_related("employee", "car"), pk=pk)
     if request.method == "POST":
@@ -321,7 +323,7 @@ def admin_request_issue_inspection(request, pk: int):
 
 @login_required
 def admin_request_return(request, pk: int):
-    if not user_in_groups(request.user, ["service_admin"]):
+    if not user_in_groups(request.user, [SERVICE_ADMIN]):
         raise PermissionDenied
     req = get_object_or_404(Request.objects.select_related("employee", "car"), pk=pk)
     if request.method == "POST":
@@ -350,6 +352,6 @@ def admin_request_return(request, pk: int):
 
 @login_required
 def admin_reports(request):
-    if not user_in_groups(request.user, ["service_admin"]):
+    if not user_in_groups(request.user, [SERVICE_ADMIN]):
         raise PermissionDenied
     return HttpResponse("Отчёты (UI будет добавлен на шаге templates-ui).")

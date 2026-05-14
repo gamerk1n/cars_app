@@ -19,10 +19,18 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
+from django.views.generic import RedirectView
 from rest_framework.authtoken.views import obtain_auth_token
+
+favicon_url = f"/{settings.STATIC_URL.lstrip('/')}favicon.svg"
 
 urlpatterns = [
     path("", include("core.urls")),
+    path(
+        "favicon.ico",
+        RedirectView.as_view(url=favicon_url, permanent=True),
+        name="favicon",
+    ),
     path(
         "login/",
         auth_views.LoginView.as_view(template_name="registration/login.html"),

@@ -35,6 +35,50 @@
   </div>
 
   <div class="card" style="margin-top: 14px;">
+    <div class="muted">Расчёты по заявке</div>
+    <div style="margin-top: 10px; display: grid; gap: 8px;">
+      <div class="row row--between">
+        <span class="muted">Дней использования</span>
+        <span class="pill">{{ calculation.usage_days }} дн.</span>
+      </div>
+      <div class="row row--between">
+        <span class="muted">Просрочка возврата</span>
+        <span class="pill">{{ calculation.overdue_days }} дн.</span>
+      </div>
+      <div class="row row--between">
+        <span class="muted">Пробег при выдаче</span>
+        <span class="pill">{{ calculation.issue_mileage|default_if_none:"—" }} км</span>
+      </div>
+      <div class="row row--between">
+        <span class="muted">Пробег при возврате</span>
+        <span class="pill">{{ calculation.return_mileage|default_if_none:"—" }} км</span>
+      </div>
+      <div class="row row--between">
+        <span class="muted">Пробег по заявке</span>
+        <span class="pill">{{ calculation.mileage_delta|default_if_none:"—" }} км</span>
+      </div>
+      <div class="row row--between">
+        <span class="muted">Среднесуточный пробег</span>
+        <span class="pill">{{ calculation.average_daily_mileage|default_if_none:"—" }} км/день</span>
+      </div>
+      <div class="row row--between">
+        <span class="muted">До следующего ТО по пробегу</span>
+        <span class="pill">{{ calculation.mileage_until_service|default_if_none:"—" }} км</span>
+      </div>
+      <div class="row row--between">
+        <span class="muted">Прогноз ТО при таком темпе</span>
+        <span class="pill">
+          {% if calculation.service_forecast_date %}
+            {{ calculation.service_forecast_date }} (через {{ calculation.service_forecast_days }} дн.)
+          {% else %}
+            —
+          {% endif %}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 14px;">
     <div class="muted">Дефекты при возврате</div>
     <div style="margin-top: 10px;">
       {% if report.request.return_defects %}

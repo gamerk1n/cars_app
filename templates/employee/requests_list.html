@@ -7,7 +7,7 @@
       <h1 class="h1">Мои заявки</h1>
       <div class="muted">Создание, просмотр и статус заявок</div>
     </div>
-    {% if user|has_group:'employee' %}
+    {% if can_create_request %}
       <a class="pill" href="{% url 'employee_request_create' %}">+ Создать</a>
     {% endif %}
   </div>

@@ -58,7 +58,7 @@ class RequestSerializer(serializers.ModelSerializer):
         try:
             employee: Employee = user.employee
         except Employee.DoesNotExist:
-            raise serializers.ValidationError("Для пользователя не создан профиль Employee.")
+            raise serializers.ValidationError("Для пользователя не создан профиль заявителя.")
         validated_data["employee"] = employee
         attachment = validated_data.get("attachment")
         if attachment:

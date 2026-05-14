@@ -48,7 +48,7 @@ class VehicleInspectionForm(forms.ModelForm):
     damage_zones = forms.MultipleChoiceField(
         required=False,
         choices=VehicleInspection.DAMAGE_ZONE_CHOICES,
-        widget=forms.CheckboxSelectMultiple(attrs={"class": "checkbox"}),
+        widget=forms.CheckboxSelectMultiple(attrs={"class": "damage-zone-options"}),
         label="Зоны повреждений",
     )
     photo_exterior = forms.FileField(
